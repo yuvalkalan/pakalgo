@@ -1,0 +1,45 @@
+.main-header {
+  width: 100%;
+  height: 8%;
+  display: flex;
+  padding-bottom: 10px;
+}
+
+.header-info {
+  padding-top: 10px;
+}
+
+.header-info button {
+  border-radius: 9999px;
+  padding-right: 10px;
+  color: inherit;
+}
+
+.header-user-info {
+  font-family: heeboFont;
+  padding-right: 10px;
+  font-size: 0.95em;
+}
+
+.header-user-info h2 {
+  text-align: right;
+  margin: 0px;
+  font-size: 1.05em;
+}
+
+.header-logos {
+  position: absolute;
+  left: 0px;
+  display: flex;
+  padding: 10px;
+  height: auto;
+}
+
+.header-logos button {
+  border-radius: 9999px;
+  padding: 0;
+}
+
+.profile-menu li {
+  font-family: heeboFont;
+}

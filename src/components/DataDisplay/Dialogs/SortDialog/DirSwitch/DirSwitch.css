@@ -1,0 +1,22 @@
+.square {
+  width: min-content;
+  height: min-content;
+  transition: all 0.5s 0s;
+  float: left;
+  cursor: pointer;
+  text-align: center;
+}
+
+.square :hover {
+  background-color: hsl(200, 80%, 65%);
+  border-radius: 35%;
+}
+.toggle-down {
+  transform: rotate(0deg);
+  color: green;
+}
+
+.toggle-up {
+  transform: rotate(-180deg);
+  color: red;
+}

@@ -1,0 +1,161 @@
+{
+  "tabledata": [
+    {
+      "header": {
+        "id": 1,
+        "group": "קבוצה",
+        "netName": "שם",
+        "netEncription": "הצפנה",
+        "netOk": "אוק",
+        "netFreq": "בקבק"
+      },
+      "body": {
+        "sitesValue": ["בק", "בק", "בק", "בק", "בק"]
+      }
+    },
+    {
+      "header": {
+        "id": 2,
+        "group": "קבוצה",
+        "netName": "שם",
+        "netEncription": "הצפנה",
+        "netOk": "אוק",
+        "netFreq": "בקבק"
+      },
+      "body": {
+        "sitesValue": ["בק", "בק", "בק", "בק", "בק"]
+      }
+    },
+    {
+      "header": {
+        "id": 3,
+        "group": "קבוצה",
+        "netName": "שם",
+        "netEncription": "הצפנה",
+        "netOk": "אוק",
+        "netFreq": "בקבק"
+      },
+      "body": {
+        "sitesValue": ["בק", "בק", "בק", "בק", "בק"]
+      }
+    },
+    {
+      "header": {
+        "id": 4,
+        "group": "קבוצה",
+        "netName": "שם",
+        "netEncription": "הצפנה",
+        "netOk": "אוק",
+        "netFreq": "בקבק"
+      },
+      "body": {
+        "sitesValue": ["בק", "בק", "בק", "בק", "בק"]
+      }
+    },
+    {
+      "header": {
+        "id": 5,
+        "group": "קבוצה",
+        "netName": "שם",
+        "netEncription": "הצפנה",
+        "netOk": "אוק",
+        "netFreq": "בקבק"
+      },
+      "body": {
+        "sitesValue": ["בק", "בק", "בק", "בק", "בק"]
+      }
+    },
+    {
+      "header": {
+        "id": 6,
+        "group": "קבוצה",
+        "netName": "שם",
+        "netEncription": "הצפנה",
+        "netOk": "אוק",
+        "netFreq": "בקבק"
+      },
+      "body": {
+        "sitesValue": ["בק", "בק", "בק", "בק", "בק"]
+      }
+    },
+    {
+      "header": {
+        "id": 7,
+        "group": "קבוצה",
+        "netName": "שם",
+        "netEncription": "הצפנה",
+        "netOk": "אוק",
+        "netFreq": "בקבק"
+      },
+      "body": {
+        "sitesValue": ["בק", "בק", "בק", "בק", "בק"]
+      }
+    },
+    {
+      "header": {
+        "id": 8,
+        "group": "קבוצה",
+        "netName": "שם",
+        "netEncription": "הצפנה",
+        "netOk": "אוק",
+        "netFreq": "בקבק"
+      },
+      "body": {
+        "sitesValue": ["בק", "בק", "בק", "בק", "בק"]
+      }
+    },
+    {
+      "header": {
+        "id": 9,
+        "group": "קבוצה",
+        "netName": "שם",
+        "netEncription": "הצפנה",
+        "netOk": "אוק",
+        "netFreq": "בקבק"
+      },
+      "body": {
+        "sitesValue": ["בק", "בק", "בק", "בק", "בק"]
+      }
+    },
+    {
+      "header": {
+        "id": 10,
+        "group": "קבוצה",
+        "netName": "שם",
+        "netEncription": "הצפנה",
+        "netOk": "אוק",
+        "netFreq": "בקבק"
+      },
+      "body": {
+        "sitesValue": ["בק", "בק", "בק", "בק", "בק"]
+      }
+    },
+    {
+      "header": {
+        "id": 11,
+        "group": "קבוצה",
+        "netName": "שם",
+        "netEncription": "הצפנה",
+        "netOk": "אוק",
+        "netFreq": "בקבק"
+      },
+      "body": {
+        "sitesValue": ["בק", "בק", "בק", "בק", "בק"]
+      }
+    },
+    {
+      "header": {
+        "id": 12,
+        "group": "קבוצה",
+        "netName": "שם",
+        "netEncription": "הצפנה",
+        "netOk": "אוק",
+        "netFreq": "בקבק"
+      },
+      "body": {
+        "sitesValue": ["בק", "בק", "בק", "בק", "בק"]
+      }
+    }
+  ],
+  "tableheaders": ["א", "ב", "ג", "ד", "ה"]
+}

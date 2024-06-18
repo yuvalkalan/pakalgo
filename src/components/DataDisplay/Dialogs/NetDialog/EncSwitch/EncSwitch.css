@@ -1,0 +1,25 @@
+.toggle-button {
+  display: inline-block;
+  width: 100%;
+  height: 30px;
+  border-radius: 0px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 1em;
+  font-weight: bold;
+}
+
+.toggle-button.on {
+  background-color: green;
+}
+
+.toggle-button.off {
+  background-color: red;
+}
+
+.toggle-button.disable {
+  background-color: gray;
+}

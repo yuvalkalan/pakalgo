@@ -1,0 +1,46 @@
+@font-face {
+  font-family: heeboFont;
+  src: url(../src/assets/static/Heebo-Regular.ttf);
+}
+
+@font-face {
+  font-family: heeboBoldFont;
+  src: url(../src/assets/static/Heebo-Bold.ttf);
+}
+
+@font-face {
+  font-family: heeboBlackFont;
+  src: url(../src/assets/static/Heebo-Black.ttf);
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgb(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(0, 0, 0, 0.4);
+}
+
+.watermark {
+  font-family: heeboBoldFont;
+  position: fixed;
+  padding-left: 4%;
+  bottom: 5px;
+  left: 5px;
+  z-index: 99;
+  opacity: 0.5;
+}

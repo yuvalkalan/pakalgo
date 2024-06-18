@@ -1,0 +1,44 @@
+.main-drawer {
+  font-family: Heebofont;
+  display: flex;
+  flex-direction: column;
+  font-size: 1.3em;
+  padding: 30px;
+  height: inherit;
+  text-align: center;
+}
+
+.main-drawer button {
+  font-family: inherit;
+  display: flex;
+  text-align: center;
+  padding: 20px;
+  border-radius: 9999px;
+  text-decoration: none;
+  color: inherit;
+  font-size: 0.95em;
+  justify-content: flex-start;
+}
+
+.main-drawer button:hover {
+  color: darkblue;
+}
+
+.main-drawer.light button:hover {
+  background-color: lightgray;
+}
+
+.main-drawer.dark button:hover {
+  background-color: darkgray;
+}
+
+.main-drawer svg {
+  padding-top: 3px;
+  padding-left: 10px;
+}
+
+.main-drawer h2 {
+  text-align: right;
+  font-size: 0.8em;
+  margin: 30px 0px 0px 0px;
+}

@@ -1,0 +1,63 @@
+.history-title {
+  font-family: HeeboFont;
+  text-align: center;
+  font-size: 3em;
+}
+
+.MuiList-root.history-list {
+  font-family: HeeboFont;
+  font-size: 2em;
+  display: block;
+  width: min-content;
+  padding-right: 5%;
+  overflow-y: scroll;
+  direction: ltr;
+}
+
+.MuiList-root.history-list li {
+  width: max-content;
+  height: min-content;
+  direction: rtl;
+}
+
+.MuiButton-root.delete-button {
+  position: fixed;
+  bottom: 10px;
+  right: 45%;
+  width: 10%;
+  padding: 0px;
+  text-align: center;
+  height: fit-content;
+  font-size: 1.5em;
+  font-family: HeeboFont;
+}
+
+.history-record {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 480px);
+  grid-gap: 1rem;
+  justify-content: center;
+  height: 60%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  margin-right: 5%;
+  margin-left: 5%;
+}
+
+.history-record button,
+.history-record a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.history-record.dark button svg {
+  color: white;
+}
+
+.history-record.light button svg {
+  color: black;
+}
+
+.history-record div {
+  height: fit-content;
+}

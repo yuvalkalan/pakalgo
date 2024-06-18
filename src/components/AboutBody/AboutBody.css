@@ -1,0 +1,94 @@
+@keyframes credit-animation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.MuiPaper-root.about-card {
+  font-family: HeeboFont;
+  background: linear-gradient(
+    to bottom right,
+    rgb(20, 65, 111),
+    rgb(148, 197, 225),
+    rgb(156, 245, 197),
+    rgb(48, 153, 59)
+  );
+  background-size: 400% 400%;
+  animation: credit-animation 8s cubic-bezier(0.52, 0.02, 0.33, 1) infinite;
+  right: 10%;
+  width: 80%;
+  top: 50%;
+  height: 70%;
+  position: absolute;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+.about-card h1 {
+  margin: auto;
+  margin-top: 12.5%;
+  width: 50%;
+  font-family: heeboBlackFont;
+  text-align: center;
+  font-size: 3em;
+  padding: 20px;
+  color: rgb(95 95 95);
+  background: -webkit-linear-gradient(
+    -70deg,
+    rgb(230, 230, 230, 0.25),
+    rgb(100, 100, 100, 0.25)
+  );
+  border-radius: 9999px;
+}
+
+.about-card h2 {
+  margin: auto;
+  width: 50%;
+  font-family: heeboBlackFont;
+  text-align: center;
+  font-size: 2em;
+  color: rgb(95 95 95);
+  padding: 10px;
+}
+
+.about-card div {
+  font-family: HeeboBoldFont;
+  text-align: center;
+  font-size: 2em;
+  color: #1976d2;
+  padding: 20px;
+}
+
+.about-card div button div {
+  background-color: rgb(250, 242, 218);
+}
+
+.credit-info {
+  font-family: HeeboBoldFont;
+  background: linear-gradient(
+    to bottom right,
+    rgb(51, 71, 91, 0.5),
+    rgb(0, 51, 204, 0.5),
+    rgb(255, 119, 204, 0.5),
+    rgb(255, 122, 89, 0.5)
+  );
+}
+
+.credit-info div div h2 {
+  font-size: 2em;
+  font-weight: bold;
+}
+
+.credit-info img {
+  width: 60px;
+  height: 60px;
+  position: absolute;
+  top: 10px;
+  padding-right: 10px;
+}

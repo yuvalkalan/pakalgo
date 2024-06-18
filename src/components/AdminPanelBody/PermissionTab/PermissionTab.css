@@ -1,0 +1,21 @@
+.MuiAutocomplete-root.permission-check {
+  font-family: heeboFont;
+  --autocomplete-height: 200px;
+  overflow-y: auto;
+  height: var(--autocomplete-height);
+}
+
+.MuiAutocomplete-root.permission-check div {
+  font-family: heeboFont;
+}
+
+.MuiAutocomplete-root.permission-check .MuiFormControl-root {
+  height: max-content;
+  min-height: 100%;
+}
+
+.MuiAutocomplete-root.permission-check .MuiInputBase-root {
+  height: 100%;
+  min-height: var(--autocomplete-height);
+  /* background-color: red; */
+}
