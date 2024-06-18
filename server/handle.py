@@ -11,7 +11,7 @@ HISTORY_FOLDER = r"history"
 RECORD_FILE_FORMAT = 'pakal_%d%m%Y_%H%M%S.sqlite'
 RECORD_STRING_FORMAT = '%d.%m.%Y %H:%M:%S'
 db = database.connect()
-print('testing')
+print('new data')
 
 INVALID_SITE_ERROR = 'שגיאה בשם אתר: '
 INVALID_UNIT_ERROR = 'שגיאה בשם עמדה: '
