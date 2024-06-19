@@ -13,10 +13,14 @@ import {
   TextField,
   Chip,
 } from "@mui/material";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { useContext, useEffect, useState } from "react";
 import { ThemeContext, themeClass } from "../../../../App";
 import { Site, SiteDialogEntry, SiteViewEntry } from "../../Interfaces";
 import ErrorSnackbar from "../../../Snackbars/ErrorSnackbar";
+import { stringCmp } from "../../NetViewBody/NetTable/NetTable";
+import SkeletonTable from "../../Skeletons/SkeletonTable/SkeletonTable";
 
 interface Props {
   open: boolean;
@@ -44,6 +48,26 @@ function getData(
     siteEntries.push({ site: site, checked: false, units: units });
   });
   setSiteEntries(siteEntries);
+}
+
+const sortOptions = ["id" as keyof Site, "name" as keyof Site];
+
+const sortByFunc: {
+  [sortBy: string]: (a: SiteDialogEntry, b: SiteDialogEntry) => number;
+} = {
+  id: (a: SiteDialogEntry, b: SiteDialogEntry) => a.site.id - b.site.id,
+  name: (a: SiteDialogEntry, b: SiteDialogEntry) =>
+    stringCmp(a.site.name, b.site.name),
+};
+
+function sortedEntries(
+  entries: SiteDialogEntry[],
+  sortBy: keyof Site,
+  isReverse: boolean
+) {
+  const newEntries = [...entries].sort(sortByFunc[sortBy]);
+  if (isReverse) newEntries.reverse();
+  return newEntries;
 }
 
 function DialogTableRow({ siteEntry, onChange }: TableRowProps) {
@@ -140,6 +164,7 @@ function DialogTableRow({ siteEntry, onChange }: TableRowProps) {
 }
 
 function SiteDialog({ open, onClose, onSubmit, sites, entries }: Props) {
+  const headers = ["#", "שם אתר"];
   const darkMode = useContext(ThemeContext);
   const [siteEntries, setSiteEntries] = useState<SiteDialogEntry[]>([]);
   const [haveData, setHaveData] = useState(false);
@@ -149,19 +174,23 @@ function SiteDialog({ open, onClose, onSubmit, sites, entries }: Props) {
   );
   const [errorSnackBar, setErrorSnackbar] = useState(false);
 
-  const isSelectAll = !siteEntries.some((entry) => entry.checked === false);
+  const [sortBy, setSortBy] = useState<keyof Site>(sortOptions[0]);
+  const [isReverse, setIsReverse] = useState<boolean>(false);
+  const showEntries = sortedEntries(siteEntries, sortBy, isReverse);
+
+  const isSelectAll = !showEntries.some((entry) => entry.checked === false);
   const isIndeterminate =
-    siteEntries.some((entry) => entry.checked === true) && !isSelectAll;
+    showEntries.some((entry) => entry.checked === true) && !isSelectAll;
   const sitesNameValid = () => {
     const set = new Set();
-    siteEntries.map((entry) => set.add(entry.site.name));
-    return set.size === siteEntries.length;
+    showEntries.map((entry) => set.add(entry.site.name));
+    return set.size === showEntries.length;
   };
 
   const handleSelectAll = () => {
     let currentValue = true;
-    for (let i = 0; i < siteEntries.length; i++) {
-      currentValue &&= siteEntries[i].checked;
+    for (let i = 0; i < showEntries.length; i++) {
+      currentValue &&= showEntries[i].checked;
     }
     setSiteEntries((current) =>
       current.map((entry) => ({ ...entry, checked: !currentValue }))
@@ -188,6 +217,14 @@ function SiteDialog({ open, onClose, onSubmit, sites, entries }: Props) {
       { checked: false, site: { id: generateId, name: "" }, units: [] },
     ]);
     setGenerateId((v) => v - 1);
+    setReCreate(false);
+  };
+
+  const handleSortBy = (index: number) => {
+    if (sortBy === sortOptions[index]) setIsReverse((v) => !v);
+    else setIsReverse(false);
+    setSortBy(sortOptions[index]);
+    setReCreate(false);
   };
 
   useEffect(() => {
@@ -202,41 +239,67 @@ function SiteDialog({ open, onClose, onSubmit, sites, entries }: Props) {
   return (
     <Dialog style={{ direction: "rtl" }} open={open} onClose={onClose}>
       <DialogTitle className="dialog-title">נהל אתרים</DialogTitle>
-      <DialogContent>
-        <Table dir="rtl" stickyHeader>
-          <TableHead>
-            <TableRow>
-              <TableCell className={themeClass("pakal-header-cell", darkMode)}>
-                <Checkbox
-                  checked={isSelectAll}
-                  indeterminate={isIndeterminate}
-                  onChange={handleSelectAll}
-                />
-              </TableCell>
-              <TableCell className={themeClass("pakal-header-cell", darkMode)}>
-                #
-              </TableCell>
-              <TableCell className={themeClass("pakal-header-cell", darkMode)}>
-                שם אתר
-              </TableCell>
-              <TableCell className={themeClass("pakal-header-cell", darkMode)}>
-                עמדות
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {siteEntries.map(
-              (SiteEntry, index) =>
-                reCreate && (
-                  <DialogTableRow
-                    key={index}
-                    siteEntry={SiteEntry}
-                    onChange={() => handleSelectChange(index)}
+      <DialogContent
+        style={{
+          padding: "0px",
+          marginLeft: "10px",
+          marginRight: "10px",
+          width: "580px",
+        }}
+      >
+        {reCreate ? (
+          <Table dir="rtl" stickyHeader>
+            <TableHead>
+              <TableRow>
+                <TableCell
+                  className={themeClass("pakal-header-cell", darkMode)}
+                >
+                  <Checkbox
+                    checked={isSelectAll}
+                    indeterminate={isIndeterminate}
+                    onChange={handleSelectAll}
                   />
-                )
-            )}
-          </TableBody>
-        </Table>
+                </TableCell>
+                {headers.map((header, index) => (
+                  <TableCell
+                    className={themeClass("pakal-header-cell", darkMode)}
+                    key={index}
+                    onClick={() => handleSortBy(index)}
+                  >
+                    <div style={{ display: "flex", justifyContent: "center" }}>
+                      {header}
+                      {sortOptions[index] === sortBy &&
+                        (isReverse ? (
+                          <KeyboardArrowDownIcon />
+                        ) : (
+                          <KeyboardArrowUpIcon />
+                        ))}
+                    </div>
+                  </TableCell>
+                ))}
+                <TableCell
+                  className={themeClass("pakal-header-cell", darkMode)}
+                >
+                  עמדות
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {showEntries.map(
+                (SiteEntry, index) =>
+                  reCreate && (
+                    <DialogTableRow
+                      key={index}
+                      siteEntry={SiteEntry}
+                      onChange={() => handleSelectChange(index)}
+                    />
+                  )
+              )}
+            </TableBody>
+          </Table>
+        ) : (
+          <SkeletonTable rows={10} />
+        )}
         <ErrorSnackbar
           open={errorSnackBar}
           onClose={() => setErrorSnackbar(false)}
