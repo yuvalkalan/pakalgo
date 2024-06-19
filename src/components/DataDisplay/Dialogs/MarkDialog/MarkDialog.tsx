@@ -16,6 +16,8 @@ import { useContext, useEffect, useState } from "react";
 import { ThemeContext, themeClass } from "../../../../App";
 import { Mark, MarkDialogEntry } from "../../Interfaces";
 import ErrorSnackbar from "../../../Snackbars/ErrorSnackbar";
+import { stringCmp } from "../../NetViewBody/NetTable/NetTable";
+import SortTableCell from "../SortTableCell/SortTableCell";
 
 interface Props {
   open: boolean;
@@ -41,6 +43,31 @@ function getData(
       checked: false,
     }))
   );
+}
+
+const sortOptions = [
+  "id" as keyof Mark,
+  "name" as keyof Mark,
+  "color" as keyof Mark,
+];
+
+const sortByFunc: {
+  [sortBy: string]: (a: MarkDialogEntry, b: MarkDialogEntry) => number;
+} = {
+  id: (a: MarkDialogEntry, b: MarkDialogEntry) => a.id - b.id,
+  name: (a: MarkDialogEntry, b: MarkDialogEntry) => stringCmp(a.name, b.name),
+  color: (a: MarkDialogEntry, b: MarkDialogEntry) =>
+    stringCmp(a.color, b.color),
+};
+
+function sortedEntries(
+  entries: MarkDialogEntry[],
+  sortBy: keyof Mark,
+  isReverse: boolean
+) {
+  const newEntries = [...entries].sort(sortByFunc[sortBy]);
+  if (isReverse) newEntries.reverse();
+  return newEntries;
 }
 
 function DialogTableRow({ markEntry, onChange }: TableRowProps) {
@@ -104,6 +131,7 @@ function DialogTableRow({ markEntry, onChange }: TableRowProps) {
 }
 
 function MarkDialog({ open, onClose, onSubmit, marks }: Props) {
+  const headers = ["#", "שם סימון", "צבע"];
   const darkMode = useContext(ThemeContext);
   const [MarkEntries, setMarkEntries] = useState<MarkDialogEntry[]>([]);
   const [haveData, setHaveData] = useState(false);
@@ -113,19 +141,23 @@ function MarkDialog({ open, onClose, onSubmit, marks }: Props) {
   );
   const [errorSnackBar, setErrorSnackbar] = useState(false);
 
-  const isSelectAll = !MarkEntries.some((entry) => entry.checked === false);
+  const [sortBy, setSortBy] = useState<keyof Mark>(sortOptions[0]);
+  const [isReverse, setIsReverse] = useState<boolean>(false);
+  const showEntries = sortedEntries(MarkEntries, sortBy, isReverse);
+
+  const isSelectAll = !showEntries.some((entry) => entry.checked === false);
   const isIndeterminate =
-    MarkEntries.some((entry) => entry.checked === true) && !isSelectAll;
+    showEntries.some((entry) => entry.checked === true) && !isSelectAll;
   const MarksNameValid = () => {
     const set = new Set();
-    MarkEntries.map((entry) => set.add(entry.name));
-    return set.size === MarkEntries.length;
+    showEntries.map((entry) => set.add(entry.name));
+    return set.size === showEntries.length;
   };
 
   const handleSelectAll = () => {
     let currentValue = true;
-    for (let i = 0; i < MarkEntries.length; i++) {
-      currentValue &&= MarkEntries[i].checked;
+    for (let i = 0; i < showEntries.length; i++) {
+      currentValue &&= showEntries[i].checked;
     }
     setMarkEntries((current) =>
       current.map((entry) => ({ ...entry, checked: !currentValue }))
@@ -157,6 +189,14 @@ function MarkDialog({ open, onClose, onSubmit, marks }: Props) {
       },
     ]);
     setGenerateId((v) => v - 1);
+    setReCreate(false);
+  };
+
+  const handleSortBy = (index: number) => {
+    if (sortBy === sortOptions[index]) setIsReverse((v) => !v);
+    else setIsReverse(false);
+    setSortBy(sortOptions[index]);
+    setReCreate(false);
   };
 
   useEffect(() => {
@@ -182,19 +222,21 @@ function MarkDialog({ open, onClose, onSubmit, marks }: Props) {
                   onChange={handleSelectAll}
                 />
               </TableCell>
-              <TableCell className={themeClass("pakal-header-cell", darkMode)}>
-                #
-              </TableCell>
-              <TableCell className={themeClass("pakal-header-cell", darkMode)}>
-                שם סימון
-              </TableCell>
-              <TableCell className={themeClass("pakal-header-cell", darkMode)}>
-                צבע
-              </TableCell>
+              {headers.map((header, index) => (
+                <SortTableCell<keyof Mark>
+                  key={index}
+                  index={index}
+                  handleSortBy={handleSortBy}
+                  value={header}
+                  sortOptions={sortOptions}
+                  sortBy={sortBy}
+                  isReverse={isReverse}
+                />
+              ))}
             </TableRow>
           </TableHead>
           <TableBody>
-            {MarkEntries.map(
+            {showEntries.map(
               (NetEntry, index) =>
                 reCreate && (
                   <DialogTableRow

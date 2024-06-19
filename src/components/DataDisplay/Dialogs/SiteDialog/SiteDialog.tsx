@@ -13,14 +13,13 @@ import {
   TextField,
   Chip,
 } from "@mui/material";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { useContext, useEffect, useState } from "react";
 import { ThemeContext, themeClass } from "../../../../App";
 import { Site, SiteDialogEntry, SiteViewEntry } from "../../Interfaces";
 import ErrorSnackbar from "../../../Snackbars/ErrorSnackbar";
 import { stringCmp } from "../../NetViewBody/NetTable/NetTable";
 import SkeletonTable from "../../Skeletons/SkeletonTable/SkeletonTable";
+import SortTableCell from "../SortTableCell/SortTableCell";
 
 interface Props {
   open: boolean;
@@ -261,21 +260,15 @@ function SiteDialog({ open, onClose, onSubmit, sites, entries }: Props) {
                   />
                 </TableCell>
                 {headers.map((header, index) => (
-                  <TableCell
-                    className={themeClass("pakal-header-cell", darkMode)}
+                  <SortTableCell<keyof Site>
                     key={index}
-                    onClick={() => handleSortBy(index)}
-                  >
-                    <div style={{ display: "flex", justifyContent: "center" }}>
-                      {header}
-                      {sortOptions[index] === sortBy &&
-                        (isReverse ? (
-                          <KeyboardArrowDownIcon />
-                        ) : (
-                          <KeyboardArrowUpIcon />
-                        ))}
-                    </div>
-                  </TableCell>
+                    index={index}
+                    handleSortBy={handleSortBy}
+                    value={header}
+                    sortOptions={sortOptions}
+                    sortBy={sortBy}
+                    isReverse={isReverse}
+                  />
                 ))}
                 <TableCell
                   className={themeClass("pakal-header-cell", darkMode)}
