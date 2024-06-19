@@ -205,9 +205,9 @@ function NetDialog({ open, onClose, onSubmit, nets }: Props) {
     Math.min(...nets.map((net) => net.id), 0) - 1
   );
   const [errorSnackBar, setErrorSnackbar] = useState(false);
+
   const [sortBy, setSortBy] = useState<keyof NetDialogEntry>(sortOptions[0]);
   const [isReverse, setIsReverse] = useState<boolean>(false);
-
   const showEntries = sortedEntries(netEntries, sortBy, isReverse);
 
   const isSelectAll = !showEntries.some((entry) => entry.checked === false);
