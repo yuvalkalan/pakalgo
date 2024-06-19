@@ -165,12 +165,8 @@ function MarkDialog({ open, onClose, onSubmit, marks }: Props) {
   };
 
   const handleSelectChange = (index: number) => {
-    setMarkEntries((current) =>
-      current.map((entry, i) => ({
-        ...entry,
-        ...(index === i ? { checked: !entry.checked } : {}),
-      }))
-    );
+    showEntries[index].checked = !showEntries[index].checked;
+    setMarkEntries((current) => [...current]);
   };
 
   const deleteSelected = () => {

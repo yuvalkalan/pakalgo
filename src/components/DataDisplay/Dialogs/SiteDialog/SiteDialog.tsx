@@ -197,12 +197,8 @@ function SiteDialog({ open, onClose, onSubmit, sites, entries }: Props) {
   };
 
   const handleSelectChange = (index: number) => {
-    setSiteEntries((current) =>
-      current.map((entry, i) => ({
-        ...entry,
-        ...(index === i ? { checked: !entry.checked } : {}),
-      }))
-    );
+    showEntries[index].checked = !showEntries[index].checked;
+    setSiteEntries((current) => [...current]);
   };
 
   const deleteSelected = () => {
