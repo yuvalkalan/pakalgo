@@ -75,6 +75,8 @@ const sortByFunc: {
     a.frequency - b.frequency,
 };
 
+const TEXT_COLOR = { error: "#b00020", warning: "#daa520" };
+
 function sortedEntries(
   entries: NetDialogEntry[],
   sortBy: keyof NetDialogEntry,
@@ -120,7 +122,10 @@ function DialogTableRow({ netEntry, onChange }: TableRowProps) {
     setNetFreq(value);
     if (value) netEntry.frequency = value;
   };
-  const isValidOk = !netOk.includes(" ");
+  const isWarningOk = netOk.includes(" "); // if ok is more then one word
+  const isErrorOk = netOk.trim() !== netOk;
+  const isErrorName = netName.trim() !== netName;
+  const isErrorGroup = netGroup.trim() !== netGroup;
   const canChange = userProfile.changeNets || netEntry.isNew;
   return (
     <TableRow>
@@ -144,6 +149,7 @@ function DialogTableRow({ netEntry, onChange }: TableRowProps) {
           onChange={changeGroup}
           InputProps={{
             disableUnderline: true,
+            ...(isErrorGroup && { style: { color: TEXT_COLOR.error } }),
           }}
         />
       </TableCell>
@@ -157,6 +163,7 @@ function DialogTableRow({ netEntry, onChange }: TableRowProps) {
           onChange={changeName}
           InputProps={{
             disableUnderline: true,
+            ...(isErrorName && { style: { color: TEXT_COLOR.error } }),
           }}
         />
       </TableCell>
@@ -175,10 +182,10 @@ function DialogTableRow({ netEntry, onChange }: TableRowProps) {
           className={themeClass("pakal-body-input", darkMode)}
           value={netOk}
           onChange={changeOk}
-          style={{ color: "yellow" }}
           InputProps={{
             disableUnderline: true,
-            ...(!isValidOk && { style: { color: "RGB(218, 165, 32)" } }),
+            ...(isWarningOk && { style: { color: TEXT_COLOR.warning } }),
+            ...(isErrorOk && { style: { color: TEXT_COLOR.error } }),
           }}
         />
       </TableCell>
@@ -214,7 +221,10 @@ function NetDialog({ open, onClose, onSubmit, nets }: Props) {
     showEntries.some((entry) => entry.checked === true) && !isSelectAll;
   const netsNameValid = () => {
     const set = new Set();
-    showEntries.map((entry) => set.add(entry.name));
+    showEntries.forEach((entry) => {
+      if (entry.name.trim() && entry.name.trim() === entry.name)
+        set.add(entry.name.trim());
+    });
     return set.size === showEntries.length;
   };
 
