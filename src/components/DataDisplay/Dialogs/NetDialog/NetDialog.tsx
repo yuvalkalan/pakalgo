@@ -219,13 +219,20 @@ function NetDialog({ open, onClose, onSubmit, nets }: Props) {
   const isSelectAll = !showEntries.some((entry) => entry.checked === false);
   const isIndeterminate =
     showEntries.some((entry) => entry.checked === true) && !isSelectAll;
-  const netsNameValid = () => {
+  const netsValid = () => {
+    // check if names are unique and valid
+    let res = true;
     const set = new Set();
     showEntries.forEach((entry) => {
       if (entry.name.trim() && entry.name.trim() === entry.name)
         set.add(entry.name.trim());
     });
-    return set.size === showEntries.length;
+    res &&= set.size === showEntries.length;
+    // check if groups are valid
+    res &&= showEntries.some((entry) => entry.group.trim() !== entry.group);
+    // check if oks are valid
+    res &&= showEntries.some((entry) => entry.ok.trim() !== entry.ok);
+    return res;
   };
 
   const handleSelectAll = () => {
@@ -354,7 +361,7 @@ function NetDialog({ open, onClose, onSubmit, nets }: Props) {
         </Button>
         <Button
           onClick={() => {
-            if (netsNameValid()) onSubmit(netEntries);
+            if (netsValid()) onSubmit(netEntries);
             else setErrorSnackbar(true);
           }}
           color="primary"
