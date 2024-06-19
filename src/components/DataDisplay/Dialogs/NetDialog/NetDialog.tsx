@@ -12,8 +12,6 @@ import {
   Checkbox,
   TextField,
 } from "@mui/material";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { useContext, useEffect, useState } from "react";
 import { ThemeContext, UserContext, themeClass } from "../../../../App";
 import { Net, NetDialogEntry } from "../../Interfaces";
@@ -22,6 +20,7 @@ import EncSwitch from "./EncSwitch/EncSwitch";
 import FreqInput from "./FreqInput/FreqInput";
 import { stringCmp } from "../../NetViewBody/NetTable/NetTable";
 import SkeletonTable from "../../Skeletons/SkeletonTable/SkeletonTable";
+import SortTableCell from "../SortTableCell/SortTableCell";
 
 interface Props {
   open: boolean;
@@ -304,21 +303,15 @@ function NetDialog({ open, onClose, onSubmit, nets }: Props) {
                   />
                 </TableCell>
                 {headers.map((header, index) => (
-                  <TableCell
-                    className={themeClass("pakal-header-cell", darkMode)}
+                  <SortTableCell<keyof NetDialogEntry>
                     key={index}
-                    onClick={() => handleSortBy(index)}
-                  >
-                    <div style={{ display: "flex", justifyContent: "center" }}>
-                      {header}
-                      {sortOptions[index] === sortBy &&
-                        (isReverse ? (
-                          <KeyboardArrowDownIcon />
-                        ) : (
-                          <KeyboardArrowUpIcon />
-                        ))}
-                    </div>
-                  </TableCell>
+                    index={index}
+                    handleSortBy={handleSortBy}
+                    value={header}
+                    sortOptions={sortOptions}
+                    sortBy={sortBy}
+                    isReverse={isReverse}
+                  />
                 ))}
               </TableRow>
             </TableHead>
