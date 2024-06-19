@@ -229,12 +229,8 @@ function NetDialog({ open, onClose, onSubmit, nets }: Props) {
   };
 
   const handleSelectChange = (index: number) => {
-    setNetEntries((current) =>
-      current.map((entry, i) => ({
-        ...entry,
-        ...(index === i ? { checked: !entry.checked } : {}),
-      }))
-    );
+    showEntries[index].checked = !showEntries[index].checked;
+    setNetEntries((current) => [...current]);
   };
 
   const handleSortBy = (index: number) => {
