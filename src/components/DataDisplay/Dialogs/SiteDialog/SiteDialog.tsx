@@ -167,7 +167,7 @@ function SiteDialog({ open, onClose, onSubmit, sites, entries }: Props) {
   const darkMode = useContext(ThemeContext);
   const [siteEntries, setSiteEntries] = useState<SiteDialogEntry[]>([]);
   const [haveData, setHaveData] = useState(false);
-  const [reCreate, setReCreate] = useState(true);
+  const [reCreate, setReCreate] = useState(false);
   const [generateId, setGenerateId] = useState(
     Math.min(...sites.map((site) => site.id), 0) - 1
   );

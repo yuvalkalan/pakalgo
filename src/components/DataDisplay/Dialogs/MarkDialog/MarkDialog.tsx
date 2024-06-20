@@ -18,6 +18,7 @@ import { Mark, MarkDialogEntry } from "../../Interfaces";
 import ErrorSnackbar from "../../../Snackbars/ErrorSnackbar";
 import { stringCmp } from "../../NetViewBody/NetTable/NetTable";
 import SortTableCell from "../SortTableCell/SortTableCell";
+import SkeletonTable from "../../Skeletons/SkeletonTable/SkeletonTable";
 
 interface Props {
   open: boolean;
@@ -135,7 +136,7 @@ function MarkDialog({ open, onClose, onSubmit, marks }: Props) {
   const darkMode = useContext(ThemeContext);
   const [MarkEntries, setMarkEntries] = useState<MarkDialogEntry[]>([]);
   const [haveData, setHaveData] = useState(false);
-  const [reCreate, setReCreate] = useState(true);
+  const [reCreate, setReCreate] = useState(false);
   const [generateId, setGenerateId] = useState(
     Math.min(...marks.map((mark) => mark.id), 0) - 2
   );
@@ -208,42 +209,48 @@ function MarkDialog({ open, onClose, onSubmit, marks }: Props) {
     <Dialog style={{ direction: "rtl" }} open={open} onClose={onClose}>
       <DialogTitle className="dialog-title">נהל סימונים</DialogTitle>
       <DialogContent>
-        <Table dir="rtl" stickyHeader>
-          <TableHead>
-            <TableRow>
-              <TableCell className={themeClass("pakal-header-cell", darkMode)}>
-                <Checkbox
-                  checked={isSelectAll}
-                  indeterminate={isIndeterminate}
-                  onChange={handleSelectAll}
-                />
-              </TableCell>
-              {headers.map((header, index) => (
-                <SortTableCell<keyof Mark>
-                  key={index}
-                  index={index}
-                  handleSortBy={handleSortBy}
-                  value={header}
-                  sortOptions={sortOptions}
-                  sortBy={sortBy}
-                  isReverse={isReverse}
-                />
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {showEntries.map(
-              (NetEntry, index) =>
-                reCreate && (
-                  <DialogTableRow
-                    key={index}
-                    markEntry={NetEntry}
-                    onChange={() => handleSelectChange(index)}
+        {reCreate ? (
+          <Table dir="rtl" stickyHeader>
+            <TableHead>
+              <TableRow>
+                <TableCell
+                  className={themeClass("pakal-header-cell", darkMode)}
+                >
+                  <Checkbox
+                    checked={isSelectAll}
+                    indeterminate={isIndeterminate}
+                    onChange={handleSelectAll}
                   />
-                )
-            )}
-          </TableBody>
-        </Table>
+                </TableCell>
+                {headers.map((header, index) => (
+                  <SortTableCell<keyof Mark>
+                    key={index}
+                    index={index}
+                    handleSortBy={handleSortBy}
+                    value={header}
+                    sortOptions={sortOptions}
+                    sortBy={sortBy}
+                    isReverse={isReverse}
+                  />
+                ))}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {showEntries.map(
+                (NetEntry, index) =>
+                  reCreate && (
+                    <DialogTableRow
+                      key={index}
+                      markEntry={NetEntry}
+                      onChange={() => handleSelectChange(index)}
+                    />
+                  )
+              )}
+            </TableBody>
+          </Table>
+        ) : (
+          <SkeletonTable rows={10} />
+        )}
         <ErrorSnackbar
           open={errorSnackBar}
           onClose={() => setErrorSnackbar(false)}
