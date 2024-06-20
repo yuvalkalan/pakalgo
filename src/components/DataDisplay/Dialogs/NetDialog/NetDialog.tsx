@@ -210,7 +210,7 @@ function NetDialog({ open, onClose, onSubmit, nets }: Props) {
   const [generateId, setGenerateId] = useState(
     Math.min(...nets.map((net) => net.id), 0) - 1
   );
-  const [errorSnackBar, setErrorSnackbar] = useState(false);
+  const [errorSnackBar, setErrorSnackbar] = useState<string | null>(null);
 
   const [sortBy, setSortBy] = useState<keyof NetDialogEntry>(sortOptions[0]);
   const [isReverse, setIsReverse] = useState<boolean>(false);
@@ -220,19 +220,36 @@ function NetDialog({ open, onClose, onSubmit, nets }: Props) {
   const isIndeterminate =
     showEntries.some((entry) => entry.checked === true) && !isSelectAll;
   const netsValid = () => {
-    // check if names are unique and valid
-    let res = true;
-    const set = new Set();
+    // check if names are unique
+    const set = new Set<string>();
     showEntries.forEach((entry) => {
-      if (entry.name.trim() && entry.name.trim() === entry.name)
-        set.add(entry.name.trim());
+      set.add(entry.name);
     });
-    res &&= set.size === showEntries.length;
+    console.log(set.size, showEntries.length, set.size !== showEntries.length);
+    if (set.size !== showEntries.length)
+      return "שמות רשתות צריכים להיות יחודיים!";
+    // check if names are valid
+    if (
+      showEntries.some(
+        (entry) => !entry.name.trim() || entry.name.trim() !== entry.name
+      )
+    )
+      return "שמות רשתות לא תקינים!";
     // check if groups are valid
-    res &&= showEntries.some((entry) => entry.group.trim() !== entry.group);
+    if (
+      showEntries.some(
+        (entry) => entry.group.trim() && entry.group.trim() !== entry.group
+      )
+    )
+      return "שמות קבוצות לא תקינים!";
     // check if oks are valid
-    res &&= showEntries.some((entry) => entry.ok.trim() !== entry.ok);
-    return res;
+    if (
+      showEntries.some(
+        (entry) => entry.ok.trim() && entry.ok.trim() !== entry.ok
+      )
+    )
+      return "שמות אוקים לא תקינים!";
+    return null;
   };
 
   const handleSelectAll = () => {
@@ -341,12 +358,11 @@ function NetDialog({ open, onClose, onSubmit, nets }: Props) {
         ) : (
           <SkeletonTable rows={10} />
         )}
-        <ErrorSnackbar
-          open={errorSnackBar}
-          onClose={() => setErrorSnackbar(false)}
-        >
-          שמות רשתות חייבים להיות יחודיים!
-        </ErrorSnackbar>
+        {errorSnackBar && (
+          <ErrorSnackbar open={true} onClose={() => setErrorSnackbar(null)}>
+            {errorSnackBar}
+          </ErrorSnackbar>
+        )}
       </DialogContent>
       <DialogActions>
         <Button color="primary" onClick={addNet}>
@@ -361,8 +377,9 @@ function NetDialog({ open, onClose, onSubmit, nets }: Props) {
         </Button>
         <Button
           onClick={() => {
-            if (netsValid()) onSubmit(netEntries);
-            else setErrorSnackbar(true);
+            const error = netsValid();
+            if (!error) onSubmit(netEntries);
+            else setErrorSnackbar(error);
           }}
           color="primary"
         >
