@@ -239,12 +239,14 @@ function HistoryBody() {
   }, [haveData]);
 
   const handleDelete = (index: number) => {
-    handleRemoveRecord(index);
+    if (confirm("Are you sure you want to permanently delete this pakal?"))
+      handleRemoveRecord(index);
   };
 
   return (
     <>
       <h1 className="history-title">היסטוריית פקל</h1>
+      <h2 className="history-subtitle">לחץ לפתיחת הפקל הרלוונטי</h2>
       <div className={themeClass("history-record", darkMode)}>
         {haveData
           ? history.map((record, index) => (

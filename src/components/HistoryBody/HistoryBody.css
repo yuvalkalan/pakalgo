@@ -3,6 +3,11 @@
   text-align: center;
   font-size: 3em;
 }
+.history-subtitle {
+  font-family: HeeboFont;
+  text-align: center;
+  font-size: 1.5em;
+}
 
 .MuiList-root.history-list {
   font-family: HeeboFont;
