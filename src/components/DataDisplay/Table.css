@@ -69,24 +69,9 @@
   height: inherit;
 }
 
-.MuiTextField-root.pakal-filter.light input {
-  /* color: white; */
-}
-
-.MuiTextField-root.pakal-filter.dark input {
-  /* color: black; */
-}
-
 .MuiTextField-root.pakal-filter label {
   font-family: heeboBoldFont;
   font-size: 0.7em;
-}
-
-.MuiTextField-root.pakal-filter.light label {
-  /* color: white; */
-}
-.MuiTextField-root.pakal-filter.dark label {
-  /* color: black; */
 }
 
 .MuiTextField-root.pakal-body-input {
@@ -139,4 +124,25 @@
 .MuiTypography-root.dialog-title {
   font-family: heeboBoldFont;
   font-size: 2em;
+}
+
+.MuiTextField-root.table-filter {
+  font-family: heeboBoldFont;
+  width: 100%;
+  height: inherit;
+}
+
+.MuiTextField-root.table-filter div {
+  height: inherit;
+}
+
+.MuiTextField-root.table-filter input {
+  font-family: heeboBoldFont;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.MuiTextField-root.table-filter label {
+  font-family: heeboBoldFont;
+  font-size: 0.7em;
 }

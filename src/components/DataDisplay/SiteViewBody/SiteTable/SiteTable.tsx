@@ -15,6 +15,7 @@ import {
   TextField,
   Tooltip,
 } from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import "./SiteTable.css";
@@ -42,8 +43,6 @@ import BookmarkIcon from "@mui/icons-material/Bookmark";
 import SiteDialog from "../../Dialogs/SiteDialog/SiteDialog";
 import NetDialog from "../../Dialogs/NetDialog/NetDialog";
 import MarkDialog from "../../Dialogs/MarkDialog/MarkDialog";
-import IconInput from "../../../Inputs/IconInput/IconInput";
-import SearchIcon from "@mui/icons-material/Search";
 
 export const SiteColors = [
   "#FFCCCC80",
@@ -409,15 +408,9 @@ function SiteTable({
                   key={index}
                   className={themeClass("pakal-header-cell", darkMode)}
                 >
-                  {/* <IconInput
-                    inputClass={themeClass("site-filter", darkMode)}
-                    value={search[index]}
-                    title={header}
-                    onChange={(event) => handleSearch(event, index)}
-                  /> */}
                   <TextField
                     variant="standard"
-                    className={themeClass("site-filter", darkMode)}
+                    className={themeClass("table-filter", darkMode)}
                     value={search[index]}
                     onChange={(event) => handleSearch(event, index)}
                     InputProps={{

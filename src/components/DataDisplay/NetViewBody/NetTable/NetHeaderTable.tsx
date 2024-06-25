@@ -1,4 +1,5 @@
 import {
+  InputAdornment,
   Table,
   TableBody,
   TableCell,
@@ -6,6 +7,7 @@ import {
   TableRow,
   TextField,
 } from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
 import { NetViewEntry } from "../../Interfaces";
 import { ChangeEvent, useContext } from "react";
 import "../../Table.css";
@@ -58,6 +60,24 @@ function NetHeaderTable({
               className={themeClass("pakal-header-cell", darkMode)}
             >
               <TextField
+                variant="standard"
+                className={themeClass("table-filter", darkMode)}
+                value={searchValues[index]}
+                onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                  handleSearch(event, index)
+                }
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon style={{ fontSize: "18px" }} />
+                    </InputAdornment>
+                  ),
+                }}
+                inputProps={{ style: { border: "0px" } }}
+                placeholder={header}
+              />
+
+              {/* <TextField
                 fullWidth
                 className={themeClass("pakal-filter", darkMode)}
                 label={header}
@@ -69,7 +89,7 @@ function NetHeaderTable({
                 InputProps={{
                   disableUnderline: true,
                 }}
-              />
+              /> */}
             </TableCell>
           ))}
         </TableRow>

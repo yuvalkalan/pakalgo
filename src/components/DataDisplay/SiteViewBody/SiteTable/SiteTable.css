@@ -20,21 +20,6 @@
   border-radius: 0;
 }
 
-.site-view-table th input {
-}
-
-.site-view-table.light th {
-  /* border-bottom: 1px solid black;
-  border-right: 1px solid black;
-  background-color: rgb(80, 150, 50); */
-}
-
-.site-view-table.dark th {
-  /* border-bottom: 1px solid white;
-  border-right: 1px solid white;
-  background-color: rgb(24, 44, 13); */
-}
-
 .site-view-table td {
   font-family: heeboFont;
   font-size: 1em;
@@ -44,54 +29,4 @@
   height: 40px;
   padding: 0px;
   white-space: nowrap;
-}
-
-.site-view-table.light td {
-  /* color: black;
-  background-color: white;
-  border-bottom: 1px solid black;
-  border-right: 1px solid black; */
-}
-
-.site-view-table.dark td {
-  /* color: white;
-  background-color: #3c3c3c;
-  border-bottom: 1px solid black;
-  border-right: 1px solid black; */
-}
-
-.MuiTextField-root.site-filter {
-  font-family: heeboBoldFont;
-  width: 100%;
-  height: inherit;
-}
-
-.MuiTextField-root.site-filter div {
-  height: inherit;
-}
-
-.MuiTextField-root.site-filter input {
-  font-family: heeboBoldFont;
-  font-size: 1.2em;
-  font-weight: bold;
-}
-
-.MuiTextField-root.site-filter.light input {
-  /* color: white; */
-}
-
-.MuiTextField-root.site-filter.dark input {
-  /* color: black; */
-}
-
-.MuiTextField-root.site-filter label {
-  font-family: heeboBoldFont;
-  font-size: 0.7em;
-}
-
-.MuiTextField-root.site-filter.light label {
-  /* color: white; */
-}
-.MuiTextField-root.site-filter.dark label {
-  /* color: black; */
 }

@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import {
   ClickAwayListener,
+  InputAdornment,
   Pagination,
   PaginationItem,
   SpeedDial,
@@ -14,6 +15,7 @@ import {
   TextField,
   Tooltip,
 } from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
@@ -165,7 +167,7 @@ function RecordTable({
     if (!reCreate) setReCreate((v) => !v);
   }, [reCreate]);
 
-  const handleFilter = (
+  const handleSearch = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     index: number
   ) => {
@@ -188,11 +190,19 @@ function RecordTable({
                   className={themeClass("pakal-header-cell", darkMode)}
                 >
                   <TextField
-                    variant="filled"
-                    className={themeClass("site-filter", darkMode)}
+                    variant="standard"
+                    className={themeClass("table-filter", darkMode)}
                     value={search[index]}
-                    label={header}
-                    onChange={(event) => handleFilter(event, index)}
+                    onChange={(event) => handleSearch(event, index)}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <SearchIcon style={{ fontSize: "18px" }} />
+                        </InputAdornment>
+                      ),
+                    }}
+                    inputProps={{ style: { border: "0px" } }}
+                    placeholder={header}
                   />
                 </TableCell>
               ))}
@@ -216,6 +226,8 @@ function RecordTable({
                       marks={marks}
                       nets={nets}
                       bgColor={bgColor}
+                      newOnly={false}
+                      handleChange={() => {}}
                     />
                   )
                 );
