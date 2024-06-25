@@ -6,17 +6,10 @@ import TextField from "@mui/material/TextField";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { useContext, useEffect, useState } from "react";
 import "./HomeBody.css";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
-import {
-  FormControl,
-  InputLabel,
-  OutlinedInput,
-  InputAdornment,
-  IconButton,
-} from "@mui/material";
 import { UserContext, UserProfile, api } from "../../App";
 import ErrorSnackbar from "../Snackbars/ErrorSnackbar";
 import { useNavigate } from "react-router-dom";
+import PasswordInput from "../PasswordInput/PasswordInput";
 
 interface Props {
   changeProfile: (newProfile: UserProfile) => void;
@@ -66,7 +59,6 @@ export default function HomeBody({ changeProfile }: Props) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const isValidUsername = username !== "";
-  const [showPassword, setShowPassword] = useState(false);
   const isValidPassword = password !== "";
   const [errorSnackbar, setErrorSnackbar] = useState("");
   const [submit, setSubmit] = useState(false);
@@ -121,33 +113,12 @@ export default function HomeBody({ changeProfile }: Props) {
             label="שם משתמש"
             error={!isValidUsername}
           />
-          <FormControl
-            fullWidth
-            required
-            error={!isValidPassword}
-            variant="outlined"
-          >
-            <InputLabel>סיסמה</InputLabel>
-            <OutlinedInput
-              value={password}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                setPassword(event.target.value)
-              }
-              type={showPassword ? "text" : "password"}
-              endAdornment={
-                <InputAdornment position="end" style={{ height: "100%" }}>
-                  <IconButton
-                    style={{ marginTop: "auto" }}
-                    onClick={() => setShowPassword((show) => !show)}
-                    onMouseDown={(event) => event.preventDefault()}
-                  >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              }
-              label="סיסמה"
-            />
-          </FormControl>
+          <PasswordInput
+            title="סיסמה"
+            password={password}
+            setPassword={(newPassword) => setPassword(newPassword)}
+            checkPassword={(password: string) => password !== ""}
+          />
           <Button
             onClick={() => {
               if (isValidUsername && isValidPassword) setSubmit(true);
