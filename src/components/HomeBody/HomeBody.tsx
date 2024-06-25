@@ -135,8 +135,9 @@ export default function HomeBody({ changeProfile }: Props) {
               }
               type={showPassword ? "text" : "password"}
               endAdornment={
-                <InputAdornment position="end">
+                <InputAdornment position="end" style={{ height: "100%" }}>
                   <IconButton
+                    style={{ marginTop: "auto" }}
                     onClick={() => setShowPassword((show) => !show)}
                     onMouseDown={(event) => event.preventDefault()}
                   >
