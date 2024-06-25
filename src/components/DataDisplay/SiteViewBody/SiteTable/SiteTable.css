@@ -66,6 +66,10 @@
   height: inherit;
 }
 
+.MuiTextField-root.site-filter div {
+  height: inherit;
+}
+
 .MuiTextField-root.site-filter input {
   font-family: heeboBoldFont;
   font-size: 1.2em;

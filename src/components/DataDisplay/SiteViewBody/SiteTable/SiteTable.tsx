@@ -1,6 +1,7 @@
 import {
   Autocomplete,
   ClickAwayListener,
+  InputAdornment,
   Pagination,
   PaginationItem,
   SpeedDial,
@@ -41,6 +42,8 @@ import BookmarkIcon from "@mui/icons-material/Bookmark";
 import SiteDialog from "../../Dialogs/SiteDialog/SiteDialog";
 import NetDialog from "../../Dialogs/NetDialog/NetDialog";
 import MarkDialog from "../../Dialogs/MarkDialog/MarkDialog";
+import IconInput from "../../../Inputs/IconInput/IconInput";
+import SearchIcon from "@mui/icons-material/Search";
 
 export const SiteColors = [
   "#FFCCCC80",
@@ -406,12 +409,26 @@ function SiteTable({
                   key={index}
                   className={themeClass("pakal-header-cell", darkMode)}
                 >
+                  {/* <IconInput
+                    inputClass={themeClass("site-filter", darkMode)}
+                    value={search[index]}
+                    title={header}
+                    onChange={(event) => handleSearch(event, index)}
+                  /> */}
                   <TextField
-                    variant="filled"
+                    variant="standard"
                     className={themeClass("site-filter", darkMode)}
                     value={search[index]}
-                    label={header}
                     onChange={(event) => handleSearch(event, index)}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <SearchIcon style={{ fontSize: "18px" }} />
+                        </InputAdornment>
+                      ),
+                    }}
+                    inputProps={{ style: { border: "0px" } }}
+                    placeholder={header}
                   />
                 </TableCell>
               ))}
