@@ -56,10 +56,12 @@ export const SiteColors = [
   "#FFD7B480",
   "#ADD8E680",
 ];
-
+export const HAS_CHANGED_COLOR = "#FF0000C0";
 export const ENCRYPTION_TRUE = "מוצפן";
 export const ENCRYPTION_FALSE = "גלוי";
 export const ENCRYPTION_NONE = "(ללא)";
+export const ENCRYPTION_TRUE_COLOR = "#008500";
+export const ENCRYPTION_FALSE_COLOR = "#cc5050";
 export const DIALOG_VALUES = { net: 1, site: 2, mark: 3 };
 export const TABLE_HEADERS = [
   "אתר",
@@ -123,7 +125,9 @@ export function getHasChanged(
   entry: SiteViewEntry | NetViewCell,
   net: Net | null
 ) {
-  return entry.hasChanged || (net && net.hasChanged) ? { color: "red" } : {};
+  return entry.hasChanged || (net && net.hasChanged)
+    ? { color: HAS_CHANGED_COLOR }
+    : {};
 }
 
 export function getMarkColor(markId: number | null, marks: Mark[]) {
@@ -271,7 +275,11 @@ function SiteTableRow({
       <TableCell
         className={themeClass("pakal-body-cell", darkMode)}
         style={{
-          background: net ? (net.encryption ? "green" : "#eb0f0f") : "gray",
+          background: net
+            ? net.encryption
+              ? ENCRYPTION_TRUE_COLOR
+              : ENCRYPTION_FALSE_COLOR
+            : "gray",
           ...getHasChanged(entry, net),
         }}
       >
