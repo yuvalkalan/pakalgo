@@ -22,7 +22,7 @@ function FreqInput({ value, onChange, disabled }: Props) {
   const checkValue = () => {
     if (error) {
       onChange(
-        Number.parseFloat(
+        parseFloat(
           (
             Math.round(Math.max(30, Math.min(value || 0, 87.975)) / 0.025) *
             0.025

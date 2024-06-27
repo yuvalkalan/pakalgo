@@ -129,7 +129,7 @@ def _copy_permission(record_db):
 @pakal_cache
 def _get_pakal_data(auth, pakal_database: sqlite3.Connection | str, new_only=False):
     """
-    מקבל פקל מבסיס נתונים
+    מקבל פק"ל מבסיס נתונים
     :param auth: פרטי משתמש
     :param pakal_database: בסיס נתונים או שם קובץ (אם זה תיעוד היסטריה!)
     :param new_only: להציג חדש בלבד

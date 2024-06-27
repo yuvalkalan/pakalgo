@@ -50,17 +50,17 @@ function SiteViewBody({ changeHasChanged }: Props) {
       () => {
         setHaveData(false);
         changeHasChanged(false);
-        setSnackBar({ text: "פקל נשמר", severity: "success" });
+        setSnackBar({ text: 'פק"ל נשמר', severity: "success" });
       },
       (statusCode: number, data: PakalError[] | null) => {
         console.log(data);
         if (statusCode === CUSTOM_CODES.NoChange) {
-          setSnackBar({ text: "לא קיים שינוי בפקל", severity: "warning" });
+          setSnackBar({ text: 'לא קיים שינוי בפק"ל', severity: "warning" });
           changeHasChanged(false);
         } else if (statusCode === CUSTOM_CODES.InvalidPakal)
           if (data)
             setSnackBar({
-              text: `זוהו שגיאות בפקל (${data.length}) -> ${data[0].error} ${data[0].value}`,
+              text: `זוהו שגיאות בפק"ל (${data.length}) -> ${data[0].error} ${data[0].value}`,
               severity: "error",
             });
           else setSnackBar({ text: "שגיאה לא ידועה", severity: "error" });

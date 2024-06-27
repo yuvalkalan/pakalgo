@@ -142,7 +142,7 @@ function HistoryItem({
           disabled={!userProfile.adminPermission}
           onClick={() => handlePullPakal(index)}
         >
-          משוך פקל
+          משוך פק"ל
         </MenuItem>
       </PopupMenu>
     </Paper>
@@ -198,11 +198,11 @@ function HistoryBody() {
           data,
           () => {
             setHaveData(false);
-            setSnackBar({ text: "פקל נשמר", severity: "success" });
+            setSnackBar({ text: 'פק"ל נשמר', severity: "success" });
           },
           (statusCode: number) => {
             if (statusCode === CUSTOM_CODES.NoChange)
-              setSnackBar({ text: "לא קיים שינוי בפקל", severity: "warning" });
+              setSnackBar({ text: 'לא קיים שינוי בפק"ל', severity: "warning" });
           }
         ),
       () => {}
@@ -245,8 +245,8 @@ function HistoryBody() {
 
   return (
     <>
-      <h1 className="history-title">היסטוריית פקל</h1>
-      <h2 className="history-subtitle">לחץ לפתיחת הפקל הרלוונטי</h2>
+      <h1 className="history-title">היסטוריית פק"ל</h1>
+      <h2 className="history-subtitle">לחץ לפתיחת הפק"ל הרלוונטי</h2>
       <div className={themeClass("history-record", darkMode)}>
         {haveData
           ? history.map((record, index) => (
