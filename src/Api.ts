@@ -9,6 +9,7 @@ import {
   userEntry,
   usersInfoData,
 } from "./components/AdminPanelBody/UserTab/UserTab";
+import { Rules } from "./components/AdminPanelBody/RuleTab/RuleTab";
 
 interface responseObj {
   isError: boolean;
@@ -123,5 +124,13 @@ export default class Api {
 
   setResetPassword(userId: number) {
     this.request("resetPassword", undefined, { userId: userId });
+  }
+
+  getRules(action: (data: Rules) => void) {
+    this.request("getRules", action);
+  }
+
+  setRules(rules: Rules, action: () => void) {
+    this.request("setRules", action, rules);
   }
 }

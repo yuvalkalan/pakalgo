@@ -108,6 +108,18 @@ def set_password(**_kwargs):
     return handle.set_password(request.json['body'])
 
 
+@app.route('/api/getRules', methods=["POST"])
+@auth_required()
+def get_rules(**_kwargs):
+    return handle.get_rules(request.json['body'])
+
+
+@app.route('/api/setRules', methods=["POST"])
+@auth_required(admin_level=True)
+def set_rules(**_kwargs):
+    return handle.set_rules(request.json['body'])
+
+
 if __name__ == "__main__":
     handle.create_dependencies()
     try:

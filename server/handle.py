@@ -6,14 +6,26 @@ import threading
 import database
 from classTypes import *
 from flask import jsonify
+import json
 
+
+JSON_TYPE = Dict[str, any]
 HISTORY_FOLDER = r"history"
 RECORD_FILE_FORMAT = 'pakal_%d%m%Y_%H%M%S.sqlite'
 RECORD_STRING_FORMAT = '%d.%m.%Y %H:%M:%S'
-db = database.connect()
-
+RULES_FILE = r'rules.json'
+DEFAULT_RULES = {'passwordRules': {'minLength': 8,
+                                   'upperLetter': False,
+                                   'spacialChar': False,
+                                   'defaultPassword': 'Aa123456'},
+                 'netRules': {'multiWordOk': False,
+                              'maxNetName': 20,
+                              'ableNoneVhf': False},
+                 'pakalRules': {'enablePullPakal': False}}
 INVALID_SITE_ERROR = 'שגיאה בשם אתר: '
 INVALID_UNIT_ERROR = 'שגיאה בשם עמדה: '
+
+db = database.connect()
 
 
 def _tuple_deep(obj):
@@ -56,6 +68,27 @@ def pakal_cache(func):
     return wrapper
 
 
+def valid_auth(auth, admin_level, change_marks, change_sites, change_nets, delete_history):
+    username, password = auth['username'], auth['password']
+    values = database.get_user_permission(db, username, password)
+    if not values:  # if username and password invalid
+        return False, False, False, False, False, False
+
+    can_change_marks, can_change_sites, can_change_nets, can_delete_history, is_admin = [bool(v) for v in values]
+    if ((admin_level and not is_admin) or
+            (delete_history and not can_delete_history) or
+            (change_sites and not can_change_sites) or
+            (change_nets and not can_change_nets) or
+            (change_marks and not can_change_marks)):
+        return False, is_admin, can_change_marks, can_change_sites, can_change_nets, can_delete_history
+    return True, is_admin, can_change_marks, can_change_sites, can_change_nets, can_delete_history
+
+
+def auth_failed():
+    print('auth faild')
+    return _response_auth_error()
+
+
 def create_dependencies():
     # create and init database
     database.init(db)
@@ -73,6 +106,10 @@ def create_dependencies():
     for history in history_info:
         if history not in records:
             database.remove_pakal_meta(db, history)
+    # create rules file
+    if not os.path.exists(RULES_FILE):
+        with open(RULES_FILE, 'w+') as rule_file:
+            json.dump(DEFAULT_RULES, rule_file)
 
 
 def close():
@@ -171,7 +208,7 @@ def _get_pakal_data(auth, pakal_database: sqlite3.Connection | str, new_only=Fal
     return entries, marks, nets, sites
 
 
-def get_pakal(body: Dict[str, any], auth):
+def get_pakal(body: JSON_TYPE, auth):
     entries, marks, nets, sites = _get_pakal_data(auth, db, body['newOnly'])
     return _response_ok({'entries': entries,
                          'marks': marks,
@@ -179,7 +216,7 @@ def get_pakal(body: Dict[str, any], auth):
                          'sites': sites})
 
 
-def set_pakal(body: Dict[str, any], auth, can_change_marks, can_change_sites, can_change_nets):
+def set_pakal(body: JSON_TYPE, auth, can_change_marks, can_change_sites, can_change_nets):
     def pakal_changed():
         # reset 'hasChanged' value before compare
         cmp_entries = [{**e, 'hasChanged': None} for e in entries]
@@ -319,7 +356,7 @@ def set_pakal(body: Dict[str, any], auth, can_change_marks, can_change_sites, ca
     return _response_ok()
 
 
-def get_history(_body: Dict[str, any]):
+def get_history(_body: JSON_TYPE):
     date_time = []
     for record in database.get_pakal_meta(db):
         filename, creator, sites, units, nets, marks = record
@@ -331,7 +368,7 @@ def get_history(_body: Dict[str, any]):
     return _response_ok(date_time)
 
 
-def get_record(body: Dict[str, any], auth, record):
+def get_record(body: JSON_TYPE, auth, record):
     try:
         db_filename = _create_history_timestamp(datetime.datetime.strptime(record, RECORD_STRING_FORMAT))
     except ValueError:
@@ -343,7 +380,7 @@ def get_record(body: Dict[str, any], auth, record):
     return _response_ok({'entries': entries, 'marks': marks, 'nets': nets, 'sites': sites})
 
 
-def remove_record(body: Dict[str, any]):
+def remove_record(body: JSON_TYPE):
     date_time = body["filename"]
     filename = datetime.datetime.strptime(date_time, RECORD_STRING_FORMAT).strftime(RECORD_FILE_FORMAT)
     records = os.listdir(HISTORY_FOLDER)
@@ -354,7 +391,7 @@ def remove_record(body: Dict[str, any]):
     return _response_not_found({'error': f'could not remove file {filename} - file not exist!'})
 
 
-def remove_time_range(body: Dict[str, any]):
+def remove_time_range(body: JSON_TYPE):
     current_time = datetime.datetime.now()
     delta_hours = body["timeRange"]
     records = os.listdir(HISTORY_FOLDER)
@@ -367,7 +404,7 @@ def remove_time_range(body: Dict[str, any]):
     return _response_ok()
 
 
-def get_permissions_info(_body: Dict[str, any]):
+def get_permissions_info(_body: JSON_TYPE):
     entries = []
     permissions = [{'id': p[0],
                     'name': p[1],
@@ -384,7 +421,7 @@ def get_permissions_info(_body: Dict[str, any]):
     return _response_ok({'entries': entries, 'sites': sites})
 
 
-def set_permissions_info(body: List[Dict[str, any]]):
+def set_permissions_info(body: List[JSON_TYPE]):
     permissions = body
     permissions = [{**p, 'name': p['name'].strip()} for p in permissions]     # strip names
     # check if names are not empty
@@ -427,7 +464,7 @@ def set_permissions_info(body: List[Dict[str, any]]):
     return _response_ok()
 
 
-def get_users_info(_body: Dict[str, any]):
+def get_users_info(_body: JSON_TYPE):
     users_info = database.get_users_data(db)
     entries = [{'userId': item[0], 'username': item[1], 'permissionId': item[2],
                 'canChange': bool(item[3])} for item in users_info]
@@ -469,13 +506,13 @@ def set_users_info(body: List[UserProfile]):
     return _response_ok()
 
 
-def reset_user_password(body: Dict[str, any]):
+def reset_user_password(body: JSON_TYPE):
     user_id = body['userId']
     database.set_user_password(db, user_id)
     return _response_ok()
 
 
-def login(body: Dict[str, any]):
+def login(body: JSON_TYPE):
     is_ok = False
     error = ''
     permission_name = ''
@@ -501,7 +538,7 @@ def login(body: Dict[str, any]):
                          })
 
 
-def set_password(body: Dict[str, any]):
+def set_password(body: JSON_TYPE):
     username = body['username']
     password = body['password']
     user_id = database.get_user_id_by_username(db, username)[0]
@@ -509,22 +546,13 @@ def set_password(body: Dict[str, any]):
     return _response_ok()
 
 
-def valid_auth(auth, admin_level, change_marks, change_sites, change_nets, delete_history):
-    username, password = auth['username'], auth['password']
-    values = database.get_user_permission(db, username, password)
-    if not values:  # if username and password invalid
-        return False, False, False, False, False, False
-
-    can_change_marks, can_change_sites, can_change_nets, can_delete_history, is_admin = [bool(v) for v in values]
-    if ((admin_level and not is_admin) or
-            (delete_history and not can_delete_history) or
-            (change_sites and not can_change_sites) or
-            (change_nets and not can_change_nets) or
-            (change_marks and not can_change_marks)):
-        return False, is_admin, can_change_marks, can_change_sites, can_change_nets, can_delete_history
-    return True, is_admin, can_change_marks, can_change_sites, can_change_nets, can_delete_history
+def get_rules(_body: JSON_TYPE):
+    with open(RULES_FILE, 'r', encoding='utf-8') as rule_file:
+        data = json.load(rule_file)
+    return _response_ok(data)
 
 
-def auth_failed():
-    print('auth faild')
-    return _response_auth_error()
+def set_rules(body: JSON_TYPE):
+    with open(RULES_FILE, 'w+') as rule_file:
+        json.dump(body, rule_file)
+    return _response_ok()

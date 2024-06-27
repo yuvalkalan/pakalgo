@@ -1,5 +1,5 @@
-import { useContext, useState } from "react";
-import { ThemeContext, themeClass } from "../../../App";
+import { useContext, useEffect, useState } from "react";
+import { ThemeContext, api, themeClass } from "../../../App";
 import {
   Accordion,
   AccordionActions,
@@ -15,6 +15,7 @@ import {
   styled,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import SaveSnackbar from "../../Snackbars/SaveSnackbar";
 
 interface PasswordRules {
   minLength: number;
@@ -31,6 +32,12 @@ interface NetRules {
 
 interface PakalRules {
   enablePullPakal: boolean;
+}
+
+export interface Rules {
+  passwordRules: PasswordRules;
+  netRules: NetRules;
+  pakalRules: PakalRules;
 }
 
 interface PasswordAccordionProps {
@@ -248,12 +255,36 @@ function PakalAccordion({ pakalRules, setPakalRules }: PakalAccordionProps) {
     </Accordion>
   );
 }
+
 function RuleTab() {
   const darkMode = useContext(ThemeContext);
   const [passwordRules, setPasswordRules] =
     useState<PasswordRules>(defaultPasswordRules);
   const [netRules, setNetRules] = useState<NetRules>(defaultNetRules);
   const [pakalRules, setPakalRules] = useState<PakalRules>(defaultPakalRules);
+  const [saveSnackBar, setSaveSnackBar] = useState<boolean>(false);
+  const setRules = () => {
+    api.setRules(
+      {
+        passwordRules: passwordRules,
+        netRules: netRules,
+        pakalRules: pakalRules,
+      },
+      () => {
+        setSaveSnackBar(true);
+      }
+    );
+  };
+  const getRules = () => {
+    api.getRules((rules: Rules) => {
+      setPasswordRules(rules.passwordRules);
+      setNetRules(rules.netRules);
+      setPakalRules(rules.pakalRules);
+    });
+  };
+  useEffect(() => {
+    getRules();
+  }, []);
   return (
     <div
       style={{ display: "block" }}
@@ -265,6 +296,10 @@ function RuleTab() {
       />
       <NetAccordion netRules={netRules} setNetRules={setNetRules} />
       <PakalAccordion pakalRules={pakalRules} setPakalRules={setPakalRules} />
+      <Button onClick={setRules}>שמור שינויים</Button>
+      <SaveSnackbar open={saveSnackBar} onClose={() => setSaveSnackBar(false)}>
+        שינויים נשמרו
+      </SaveSnackbar>
     </div>
   );
 }

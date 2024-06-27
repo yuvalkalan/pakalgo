@@ -16,7 +16,7 @@ const AdminTabPanel = styled(TabPanel)({
 });
 
 function AdminPanelBody() {
-  const [value, setValue] = useState("1");
+  const [value, setValue] = useState("3");
   return (
     <TabContext value={value}>
       <Box
