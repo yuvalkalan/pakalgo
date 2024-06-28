@@ -1,12 +1,12 @@
 import {
   Autocomplete,
   Button,
-  Checkbox,
   Chip,
   ClickAwayListener,
   SpeedDial,
   SpeedDialAction,
   SpeedDialIcon,
+  Switch,
   Table,
   TableBody,
   TableCell,
@@ -127,7 +127,7 @@ function PermissionRow({ entry, sites }: PermissionRowProps) {
         />
       </TableCell>
       <TableCell style={{ textAlign: "center" }}>
-        <Checkbox
+        <Switch
           onChange={() => {
             setChangeMarks((v) => !v);
             entry.enableChangeMarks = !entry.enableChangeMarks;
@@ -136,7 +136,7 @@ function PermissionRow({ entry, sites }: PermissionRowProps) {
         />
       </TableCell>
       <TableCell style={{ textAlign: "center" }}>
-        <Checkbox
+        <Switch
           onChange={() => {
             setChangeSites((v) => !v);
             entry.enableChangeSites = !entry.enableChangeSites;
@@ -145,7 +145,7 @@ function PermissionRow({ entry, sites }: PermissionRowProps) {
         />
       </TableCell>
       <TableCell style={{ textAlign: "center" }}>
-        <Checkbox
+        <Switch
           onChange={() => {
             setChangeNets((v) => !v);
             entry.enableChangeNets = !entry.enableChangeNets;
@@ -154,7 +154,7 @@ function PermissionRow({ entry, sites }: PermissionRowProps) {
         />
       </TableCell>
       <TableCell style={{ textAlign: "center" }}>
-        <Checkbox
+        <Switch
           onChange={() => {
             setDeleteHistory((v) => !v);
             entry.enableDeleteHistory = !entry.enableDeleteHistory;
