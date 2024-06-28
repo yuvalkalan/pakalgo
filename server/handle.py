@@ -4,24 +4,15 @@ import os
 import sqlite3
 import threading
 import database
+import rules
 from classTypes import *
 from flask import jsonify
-import json
 
 
 JSON_TYPE = Dict[str, any]
 HISTORY_FOLDER = r"history"
 RECORD_FILE_FORMAT = 'pakal_%d%m%Y_%H%M%S.sqlite'
 RECORD_STRING_FORMAT = '%d.%m.%Y %H:%M:%S'
-RULES_FILE = r'rules.json'
-DEFAULT_RULES = {'passwordRules': {'minLength': 8,
-                                   'upperLetter': False,
-                                   'spacialChar': False,
-                                   'defaultPassword': 'Aa123456'},
-                 'netRules': {'multiWordOk': False,
-                              'maxNetName': 20,
-                              'ableNoneVhf': False},
-                 'pakalRules': {'enablePullPakal': False}}
 INVALID_SITE_ERROR = 'שגיאה בשם אתר: '
 INVALID_UNIT_ERROR = 'שגיאה בשם עמדה: '
 
@@ -85,7 +76,6 @@ def valid_auth(auth, admin_level, change_marks, change_sites, change_nets, delet
 
 
 def auth_failed():
-    print('auth faild')
     return _response_auth_error()
 
 
@@ -106,10 +96,7 @@ def create_dependencies():
     for history in history_info:
         if history not in records:
             database.remove_pakal_meta(db, history)
-    # create rules file
-    if not os.path.exists(RULES_FILE):
-        with open(RULES_FILE, 'w+') as rule_file:
-            json.dump(DEFAULT_RULES, rule_file)
+    rules.create_dependencies()
 
 
 def close():
@@ -547,12 +534,10 @@ def set_password(body: JSON_TYPE):
 
 
 def get_rules(_body: JSON_TYPE):
-    with open(RULES_FILE, 'r', encoding='utf-8') as rule_file:
-        data = json.load(rule_file)
+    data = rules.get_rules()
     return _response_ok(data)
 
 
 def set_rules(body: JSON_TYPE):
-    with open(RULES_FILE, 'w+') as rule_file:
-        json.dump(body, rule_file)
+    rules.set_rules(body)
     return _response_ok()
