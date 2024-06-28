@@ -25,7 +25,7 @@ export interface PasswordRules {
 
 export interface NetRules {
   multiWordOk: boolean;
-  maxNetName: number;
+  maxNetName: number | null;
   ableNoneVhf: boolean;
 }
 
@@ -69,7 +69,17 @@ function RuleTab({ changeProfile }: Props) {
   const [pakalRules, setPakalRules] = useState<PakalRules>(
     userProfile.rules.pakalRules
   );
+  const [limitNetLength, setLimitNetLength] = useState<boolean>(
+    !!userProfile.rules.netRules.maxNetName
+  );
   const [saveSnackBar, setSaveSnackBar] = useState<boolean>(false);
+
+  const toggleLimitNetLength = () => {
+    if (!limitNetLength)
+      setNetRules((nr) => ({ ...nr, maxNetName: defaultNetRules.maxNetName }));
+    setLimitNetLength((v) => !v);
+  };
+
   const setRules = () => {
     if (
       window.confirm(
@@ -78,7 +88,10 @@ function RuleTab({ changeProfile }: Props) {
     ) {
       const rules = {
         passwordRules: passwordRules,
-        netRules: netRules,
+        netRules: {
+          ...netRules,
+          maxNetName: limitNetLength ? netRules.maxNetName : null,
+        },
         pakalRules: pakalRules,
       };
       api.setRules(rules, () => {
@@ -96,7 +109,12 @@ function RuleTab({ changeProfile }: Props) {
         passwordRules={passwordRules}
         setPasswordRules={setPasswordRules}
       />
-      <NetAccordion netRules={netRules} setNetRules={setNetRules} />
+      <NetAccordion
+        netRules={netRules}
+        setNetRules={setNetRules}
+        limitNetLength={limitNetLength}
+        toggleLimitNetLength={toggleLimitNetLength}
+      />
       <PakalAccordion pakalRules={pakalRules} setPakalRules={setPakalRules} />
       <Button onClick={setRules}>שמור שינויים</Button>
       <SaveSnackbar open={saveSnackBar} onClose={() => setSaveSnackBar(false)}>

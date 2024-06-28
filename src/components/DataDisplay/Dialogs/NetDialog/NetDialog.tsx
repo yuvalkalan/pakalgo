@@ -87,6 +87,14 @@ function sortedEntries(
   return newEntries;
 }
 
+function validNetName(name: string, maxlength: number | null) {
+  return (
+    name.trim() &&
+    name.trim() === name &&
+    (!maxlength || name.length <= maxlength)
+  );
+}
+
 function DialogTableRow({ netEntry, onChange }: TableRowProps) {
   const darkMode = useContext(ThemeContext);
   const userProfile = useContext(UserContext);
@@ -124,7 +132,10 @@ function DialogTableRow({ netEntry, onChange }: TableRowProps) {
   };
   const isWarningOk = netOk.includes(" "); // if ok is more then one word
   const isErrorOk = netOk.trim() !== netOk;
-  const isErrorName = netName.trim() !== netName;
+  const isErrorName = !validNetName(
+    netName,
+    userProfile.rules.netRules.maxNetName
+  );
   const isErrorGroup = netGroup.trim() !== netGroup;
   const canChange = userProfile.changeNets || netEntry.isNew;
   return (
@@ -225,13 +236,16 @@ function NetDialog({ open, onClose, onSubmit, nets }: Props) {
     showEntries.forEach((entry) => {
       set.add(entry.name);
     });
-    console.log(set.size, showEntries.length, set.size !== showEntries.length);
     if (set.size !== showEntries.length)
       return "שמות רשתות צריכים להיות יחודיים!";
     // check if names are valid
     if (
       showEntries.some(
-        (entry) => !entry.name.trim() || entry.name.trim() !== entry.name
+        (entry) =>
+          !validNetName(
+            entry.name.trim(),
+            userProfile.rules.netRules.maxNetName
+          )
       )
     )
       return "שמות רשתות לא תקינים!";

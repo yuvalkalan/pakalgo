@@ -7,6 +7,7 @@ import {
   Switch,
   AccordionActions,
   Button,
+  Checkbox,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
@@ -19,6 +20,8 @@ import {
 interface NetAccordionProps {
   netRules: NetRules;
   setNetRules: React.Dispatch<React.SetStateAction<NetRules>>;
+  limitNetLength: boolean;
+  toggleLimitNetLength: () => void;
 }
 
 export const defaultNetRules: NetRules = {
@@ -27,7 +30,14 @@ export const defaultNetRules: NetRules = {
   ableNoneVhf: false,
 };
 
-function NetAccordion({ netRules, setNetRules }: NetAccordionProps) {
+const COLOR_DISABLED = "rgba(255, 255, 255, 0.5)";
+
+function NetAccordion({
+  netRules,
+  setNetRules,
+  limitNetLength,
+  toggleLimitNetLength,
+}: NetAccordionProps) {
   return (
     <Accordion style={{ fontFamily: "heeboFont" }} defaultExpanded>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>רשת</AccordionSummary>
@@ -35,10 +45,25 @@ function NetAccordion({ netRules, setNetRules }: NetAccordionProps) {
         <StyledTable>
           <TableBody>
             <TableRow>
-              <StyledTableCell>אורך שם רשת מקסימלי</StyledTableCell>
+              <StyledTableCell>
+                <Checkbox
+                  checked={limitNetLength}
+                  onChange={toggleLimitNetLength}
+                />
+              </StyledTableCell>
+              <StyledTableCell
+                style={limitNetLength ? {} : { color: COLOR_DISABLED }}
+              >
+                אורך שם רשת מקסימלי
+              </StyledTableCell>
               <StyledTableCell>
                 <StyledInput
-                  value={Number(netRules.maxNetName).toString()}
+                  disabled={!limitNetLength}
+                  value={
+                    netRules.maxNetName
+                      ? Number(netRules.maxNetName).toString()
+                      : defaultNetRules.maxNetName
+                  }
                   type="number"
                   onChange={(event) => {
                     const newLength = Math.min(
@@ -54,7 +79,9 @@ function NetAccordion({ netRules, setNetRules }: NetAccordionProps) {
               </StyledTableCell>
             </TableRow>
             <TableRow>
-              <StyledTableCell>אפשר לאוק להיות ארוך ממילה אחת</StyledTableCell>
+              <StyledTableCell colSpan={2}>
+                אפשר לאוק להיות ארוך ממילה אחת
+              </StyledTableCell>
               <StyledTableCell>
                 <Switch
                   checked={netRules.multiWordOk}
@@ -68,7 +95,7 @@ function NetAccordion({ netRules, setNetRules }: NetAccordionProps) {
               </StyledTableCell>
             </TableRow>
             <TableRow>
-              <StyledTableCell>
+              <StyledTableCell colSpan={2}>
                 אפשר הכנסת תדרים שאינם בתחום התג"מ
               </StyledTableCell>
               <StyledTableCell>
@@ -87,7 +114,14 @@ function NetAccordion({ netRules, setNetRules }: NetAccordionProps) {
         </StyledTable>
       </AccordionDetails>
       <AccordionActions>
-        <Button onClick={() => setNetRules(defaultNetRules)}>אפס</Button>
+        <Button
+          onClick={() => {
+            setNetRules(defaultNetRules);
+            !limitNetLength && toggleLimitNetLength();
+          }}
+        >
+          אפס
+        </Button>
       </AccordionActions>
     </Accordion>
   );
