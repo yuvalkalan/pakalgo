@@ -522,7 +522,7 @@ def login(body: JSON_TYPE):
                          'changeSites': can_change_sites,
                          'changeNets': can_change_nets,
                          'deleteHistory': can_delete_history,
-                         'rules': rules.get_rules()
+                         'rules': rules.get_rules(admin_permission)
                          })
 
 

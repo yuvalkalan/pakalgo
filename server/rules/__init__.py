@@ -13,11 +13,12 @@ DEFAULT_RULES = {'passwordRules': {'minLength': 8,
                  'pakalRules': {'enablePullPakal': False}}
 
 
-def get_rules():
+def get_rules(is_admin=False):
     with open(RULES_FILE, 'r', encoding='utf-8') as rule_file:
         rules = json.load(rule_file)
     # hide real default password value from users
-    rules['passwordRules']['defaultPassword'] = ''
+    if not is_admin:
+        rules['passwordRules']['defaultPassword'] = ''
     return rules
 
 
