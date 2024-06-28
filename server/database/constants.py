@@ -17,9 +17,6 @@ def hash_password(password):
     return _bytes_to_hex_string(hashlib.sha256(password.encode()).digest())
 
 
-DEFAULT_PASSWORD = 'Aa123456'
-DEFAULT_PASSWORD_HASHED = hash_password(DEFAULT_PASSWORD)
-
 ADMIN_USERNAME = 'אדמין'
 ADMIN_PASSWORD = 'huckvnkl'
 ADMIN_PASSWORD_HASHED = hash_password(ADMIN_PASSWORD)

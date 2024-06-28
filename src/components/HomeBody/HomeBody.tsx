@@ -10,6 +10,7 @@ import { UserContext, UserProfile, api } from "../../App";
 import ErrorSnackbar from "../Snackbars/ErrorSnackbar";
 import { useNavigate } from "react-router-dom";
 import PasswordInput from "../PasswordInput/PasswordInput";
+import { Rules } from "../AdminPanelBody/RuleTab/RuleTab";
 
 interface Props {
   changeProfile: (newProfile: UserProfile) => void;
@@ -24,6 +25,7 @@ export interface loginResponse {
   changeSites: boolean;
   changeNets: boolean;
   deleteHistory: boolean;
+  rules: Rules;
 }
 
 export function Login(
@@ -44,6 +46,7 @@ export function Login(
         changeNets: data.changeNets,
         changeSites: data.changeSites,
         deleteHistory: data.deleteHistory,
+        rules: data.rules,
       };
       changeProfile(newUserProfile);
     } else {

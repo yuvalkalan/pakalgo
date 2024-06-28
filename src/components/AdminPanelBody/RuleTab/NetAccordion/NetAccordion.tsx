@@ -13,7 +13,6 @@ import {
   StyledTable,
   StyledTableCell,
   StyledInput,
-  defaultNetRules,
   NetRules,
 } from "../RuleTab";
 
@@ -21,6 +20,12 @@ interface NetAccordionProps {
   netRules: NetRules;
   setNetRules: React.Dispatch<React.SetStateAction<NetRules>>;
 }
+
+export const defaultNetRules: NetRules = {
+  multiWordOk: false,
+  maxNetName: 20,
+  ableNoneVhf: false,
+};
 
 function NetAccordion({ netRules, setNetRules }: NetAccordionProps) {
   return (

@@ -126,10 +126,6 @@ export default class Api {
     this.request("resetPassword", undefined, { userId: userId });
   }
 
-  getRules(action: (data: Rules) => void) {
-    this.request("getRules", action);
-  }
-
   setRules(rules: Rules, action: () => void) {
     this.request("setRules", action, rules);
   }

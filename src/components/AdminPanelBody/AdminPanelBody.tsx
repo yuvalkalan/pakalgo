@@ -7,6 +7,11 @@ import { useState } from "react";
 import PermissionTab from "./PermissionTab/PermissionTab";
 import UserTab from "./UserTab/UserTab";
 import RuleTab from "./RuleTab/RuleTab";
+import { UserProfile } from "../../App";
+
+interface Props {
+  changeProfile: (userProfile: UserProfile) => void;
+}
 
 const AdminTabPanel = styled(TabPanel)({
   height: "90%",
@@ -15,7 +20,7 @@ const AdminTabPanel = styled(TabPanel)({
   margin: "auto",
 });
 
-function AdminPanelBody() {
+function AdminPanelBody({ changeProfile }: Props) {
   const [value, setValue] = useState("1");
   return (
     <TabContext value={value}>
@@ -45,7 +50,7 @@ function AdminPanelBody() {
         <PermissionTab />
       </AdminTabPanel>
       <AdminTabPanel value="3">
-        <RuleTab />
+        <RuleTab changeProfile={changeProfile} />
       </AdminTabPanel>
     </TabContext>
   );

@@ -484,7 +484,7 @@ def set_users_info(body: List[UserProfile]):
     # add and edit users
     for user in users_info:
         if user['userId'] == -1:
-            database.add_user(db, user['username'], user['permissionId'])
+            database.add_user(db, user['username'], rules.get_default_password_hashed(), user['permissionId'])
         else:
             database.edit_user(db, user['userId'], user['username'], user['permissionId'])
 
@@ -495,7 +495,7 @@ def set_users_info(body: List[UserProfile]):
 
 def reset_user_password(body: JSON_TYPE):
     user_id = body['userId']
-    database.set_user_password(db, user_id)
+    database.set_user_password(db, user_id, rules.get_default_password_hashed())
     return _response_ok()
 
 
@@ -521,7 +521,8 @@ def login(body: JSON_TYPE):
                          'changeMarks': can_change_marks,
                          'changeSites': can_change_sites,
                          'changeNets': can_change_nets,
-                         'deleteHistory': can_delete_history
+                         'deleteHistory': can_delete_history,
+                         'rules': rules.get_rules()
                          })
 
 

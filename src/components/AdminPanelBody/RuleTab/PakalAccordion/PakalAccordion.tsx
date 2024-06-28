@@ -9,17 +9,14 @@ import {
   Button,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import {
-  PakalRules,
-  StyledTable,
-  StyledTableCell,
-  defaultPakalRules,
-} from "../RuleTab";
+import { PakalRules, StyledTable, StyledTableCell } from "../RuleTab";
 
 interface PakalAccordionProps {
   pakalRules: PakalRules;
   setPakalRules: React.Dispatch<React.SetStateAction<PakalRules>>;
 }
+
+export const defaultPakalRules: PakalRules = { enablePullPakal: false };
 
 function PakalAccordion({ pakalRules, setPakalRules }: PakalAccordionProps) {
   return (

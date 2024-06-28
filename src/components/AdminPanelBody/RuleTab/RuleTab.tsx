@@ -1,10 +1,20 @@
-import { useContext, useEffect, useState } from "react";
-import { ThemeContext, api, themeClass } from "../../../App";
+import { useContext, useState } from "react";
+import {
+  ThemeContext,
+  UserContext,
+  UserProfile,
+  api,
+  themeClass,
+} from "../../../App";
 import { Button, Table, TableCell, TextField, styled } from "@mui/material";
 import SaveSnackbar from "../../Snackbars/SaveSnackbar";
-import NetAccordion from "./NetAccordion/NetAccordion";
-import PakalAccordion from "./PakalAccordion/PakalAccordion";
-import PasswordAccordion from "./PasswordAccordion/PasswordAccordion";
+import NetAccordion, { defaultNetRules } from "./NetAccordion/NetAccordion";
+import PakalAccordion, {
+  defaultPakalRules,
+} from "./PakalAccordion/PakalAccordion";
+import PasswordAccordion, {
+  defaultPasswordRules,
+} from "./PasswordAccordion/PasswordAccordion";
 
 export interface PasswordRules {
   minLength: number;
@@ -29,6 +39,10 @@ export interface Rules {
   pakalRules: PakalRules;
 }
 
+interface Props {
+  changeProfile: (userProfile: UserProfile) => void;
+}
+
 export const StyledTable = styled(Table)({
   width: "50%",
   marginLeft: "5%",
@@ -37,48 +51,42 @@ export const StyledTable = styled(Table)({
 export const StyledTableCell = styled(TableCell)({ fontFamily: "heeboFont" });
 export const StyledInput = styled(TextField)({ fontFamily: "heeboFont" });
 
-export const defaultPasswordRules: PasswordRules = {
-  minLength: 8,
-  upperLetter: false,
-  spacialChar: false,
-  defaultPassword: "Aa123456",
+export const defaultRules: Rules = {
+  passwordRules: defaultPasswordRules,
+  netRules: defaultNetRules,
+  pakalRules: defaultPakalRules,
 };
-export const defaultNetRules: NetRules = {
-  multiWordOk: false,
-  maxNetName: 20,
-  ableNoneVhf: false,
-};
-export const defaultPakalRules: PakalRules = { enablePullPakal: false };
 
-function RuleTab() {
+function RuleTab({ changeProfile }: Props) {
   const darkMode = useContext(ThemeContext);
-  const [passwordRules, setPasswordRules] =
-    useState<PasswordRules>(defaultPasswordRules);
-  const [netRules, setNetRules] = useState<NetRules>(defaultNetRules);
-  const [pakalRules, setPakalRules] = useState<PakalRules>(defaultPakalRules);
+  const userProfile = useContext(UserContext);
+  const [passwordRules, setPasswordRules] = useState<PasswordRules>(
+    userProfile.rules.passwordRules
+  );
+  const [netRules, setNetRules] = useState<NetRules>(
+    userProfile.rules.netRules
+  );
+  const [pakalRules, setPakalRules] = useState<PakalRules>(
+    userProfile.rules.pakalRules
+  );
   const [saveSnackBar, setSaveSnackBar] = useState<boolean>(false);
   const setRules = () => {
-    api.setRules(
-      {
+    if (
+      window.confirm(
+        "This action will change advanced system settings, and may affect the information currently in it.\nAre you sure you want to proceed?"
+      )
+    ) {
+      const rules = {
         passwordRules: passwordRules,
         netRules: netRules,
         pakalRules: pakalRules,
-      },
-      () => {
+      };
+      api.setRules(rules, () => {
         setSaveSnackBar(true);
-      }
-    );
+      });
+      changeProfile({ ...userProfile, rules: rules });
+    }
   };
-  const getRules = () => {
-    api.getRules((rules: Rules) => {
-      setPasswordRules(rules.passwordRules);
-      setNetRules(rules.netRules);
-      setPakalRules(rules.pakalRules);
-    });
-  };
-  useEffect(() => {
-    getRules();
-  }, []);
   return (
     <div
       style={{ display: "block" }}

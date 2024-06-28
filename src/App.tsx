@@ -21,6 +21,10 @@ import AppHeader from "./components/AppHeader/AppHeader.tsx";
 import Api from "./Api.ts";
 import "./App.css";
 import NetViewBody from "./components/DataDisplay/NetViewBody/NetViewBody.tsx";
+import {
+  Rules,
+  defaultRules,
+} from "./components/AdminPanelBody/RuleTab/RuleTab.tsx";
 
 export interface UserProfile {
   username: string;
@@ -31,6 +35,7 @@ export interface UserProfile {
   changeSites: boolean;
   changeNets: boolean;
   deleteHistory: boolean;
+  rules: Rules;
 }
 export const defaultUserProfile: UserProfile = {
   username: "",
@@ -41,6 +46,7 @@ export const defaultUserProfile: UserProfile = {
   changeSites: false,
   changeNets: false,
   deleteHistory: false,
+  rules: defaultRules,
 };
 export const ThemeContext: Context<boolean> = createContext(false);
 export const UserContext: Context<UserProfile> =
@@ -102,16 +108,20 @@ function App() {
     setDarkMode(newMode);
     DarkModeStorage(newMode);
   };
+
   const changeProfile = (newProfile: UserProfile) => {
     setUserProfile(newProfile);
     setLocalUserProfile(newProfile);
   };
+
   const changeHasChanged = (newValue: boolean) => {
     setHasChanged(newValue);
   };
+
   const changeDrawerOpen = (newValue: boolean) => {
     setDrawerOpen(newValue);
   };
+
   useEffect(() => {
     if (userProfile.username && userProfile.password)
       Login(
@@ -122,6 +132,7 @@ function App() {
         undefined
       );
   }, []);
+
   // bind screen size change
   useEffect(() => {
     const handleResize = () => {
@@ -139,6 +150,7 @@ function App() {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
   return (
     <CacheProvider value={RtlCache}>
       <ThemeProvider theme={darkMode ? RtlAndDarkTheme : RtlTheme}>
@@ -186,7 +198,10 @@ function App() {
                       path="/history/:datetime"
                       element={<HistoryRecordBody />}
                     />
-                    <Route path="/admin-panel" element={<AdminPanelBody />} />
+                    <Route
+                      path="/admin-panel"
+                      element={<AdminPanelBody changeProfile={changeProfile} />}
+                    />
                     <Route path="/about" element={<AboutBody />} />
                     <Route
                       path="/profile"

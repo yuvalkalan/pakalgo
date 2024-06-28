@@ -22,8 +22,8 @@ def create_admin_user(cursor: sqlite3.Cursor):
 
 
 @_setter_decorator
-def add_user(cursor: sqlite3.Cursor, username, permission_id=None):
-    cursor.execute(ADD_USER, (username, DEFAULT_PASSWORD_HASHED, permission_id))
+def add_user(cursor: sqlite3.Cursor, username, password, permission_id=None):
+    cursor.execute(ADD_USER, (username, password, permission_id))
 
 
 @_setter_decorator
@@ -32,7 +32,7 @@ def edit_user(cursor: sqlite3.Cursor, user_id, username, permission_id=None):
 
 
 @_setter_decorator
-def set_user_password(cursor: sqlite3.Cursor, user_id, new_password=DEFAULT_PASSWORD_HASHED):
+def set_user_password(cursor: sqlite3.Cursor, user_id, new_password):
     cursor.execute(SET_USER_PASSWORD, (new_password, user_id, ADMIN_USERNAME))
 
 

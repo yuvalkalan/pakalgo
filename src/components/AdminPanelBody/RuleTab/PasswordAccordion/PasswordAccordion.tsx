@@ -14,13 +14,19 @@ import {
   StyledInput,
   StyledTable,
   StyledTableCell,
-  defaultPasswordRules,
 } from "../RuleTab";
 
 interface PasswordAccordionProps {
   passwordRules: PasswordRules;
   setPasswordRules: React.Dispatch<React.SetStateAction<PasswordRules>>;
 }
+
+export const defaultPasswordRules: PasswordRules = {
+  minLength: 8,
+  upperLetter: false,
+  spacialChar: false,
+  defaultPassword: "Aa123456",
+};
 
 function PasswordAccordion({
   passwordRules,
