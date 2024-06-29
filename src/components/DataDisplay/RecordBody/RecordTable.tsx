@@ -23,8 +23,10 @@ import FilterAltOffIcon from "@mui/icons-material/FilterAltOff";
 import { Mark, Net, Site, SiteViewEntry, SpeedDialButton } from "../Interfaces";
 import {
   ENCRYPTION_FALSE,
+  ENCRYPTION_FALSE_COLOR,
   ENCRYPTION_NONE,
   ENCRYPTION_TRUE,
+  ENCRYPTION_TRUE_COLOR,
   SiteColors,
   SiteTableRowProps,
   TABLE_HEADERS,
@@ -97,7 +99,11 @@ function RecordTableRow({
       <TableCell
         className={themeClass("pakal-body-cell", darkMode)}
         style={{
-          background: net ? (net.encryption ? "green" : "#eb0f0f") : "gray",
+          background: net
+            ? net.encryption
+              ? ENCRYPTION_TRUE_COLOR
+              : ENCRYPTION_FALSE_COLOR
+            : "gray",
           ...getHasChanged(entry, net),
         }}
       >
