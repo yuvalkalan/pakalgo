@@ -29,16 +29,30 @@ import NetTableRow from "./NetTableRow";
 import SortDialog from "../../Dialogs/SortDialog/SortDialog";
 import NetHeaderTable from "./NetHeaderTable";
 import { ThemeContext, themeClass } from "../../../../App";
+import {
+  ENCRYPTION_FALSE,
+  ENCRYPTION_TRUE,
+} from "../../SiteViewBody/SiteTable/SiteTable";
 
 const headers = ["#", "קבוצה", "שם רשת", "הצפנה", "אוק", "תדר"];
 const pagingSize = 20;
-const entryHeaderParams: (keyof Net)[] = [
-  "id" as keyof Net,
-  "group" as keyof Net,
-  "name" as keyof Net,
-  "encryption" as keyof Net,
-  "ok" as keyof Net,
-  "frequency" as keyof Net,
+
+interface NetEntry {
+  id: string;
+  group: string;
+  name: string;
+  encryption: string;
+  ok: string;
+  frequency: string;
+}
+
+const entryHeaderParams: (keyof NetEntry)[] = [
+  "id" as keyof NetEntry,
+  "group" as keyof NetEntry,
+  "name" as keyof NetEntry,
+  "encryption" as keyof NetEntry,
+  "ok" as keyof NetEntry,
+  "frequency" as keyof NetEntry,
 ];
 
 export interface SortByValue {
@@ -90,17 +104,18 @@ function filterEntries(
     sorted.reverse();
   }
   sorted.forEach((entry) => {
-    let isFiltered = true;
-    for (let i = 0; i < entryHeaderParams.length; i++) {
-      if (
-        !entry.net[entryHeaderParams[i]].toString().includes(headersValue[i])
-      ) {
-        isFiltered = false;
-      }
-    }
-    if (isFiltered) {
-      filteredEntries.push(entry);
-    }
+    const row: NetEntry = {
+      id: entry.net.id.toString(),
+      group: entry.net.group,
+      name: entry.net.name,
+      encryption: entry.net.encryption ? ENCRYPTION_TRUE : ENCRYPTION_FALSE,
+      ok: entry.net.ok,
+      frequency: entry.net.frequency.toString(),
+    };
+    const filterd = entryHeaderParams.every((value, index) =>
+      row[value].includes(headersValue[index])
+    );
+    if (filterd) filteredEntries.push(entry);
   });
   return filteredEntries;
 }

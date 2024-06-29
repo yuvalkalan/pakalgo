@@ -14,7 +14,9 @@ import "../../Table.css";
 import { ThemeContext, themeClass } from "../../../../App";
 import {
   ENCRYPTION_FALSE,
+  ENCRYPTION_FALSE_COLOR,
   ENCRYPTION_TRUE,
+  ENCRYPTION_TRUE_COLOR,
 } from "../../SiteViewBody/SiteTable/SiteTable";
 
 interface Props {
@@ -76,20 +78,6 @@ function NetHeaderTable({
                 inputProps={{ style: { border: "0px" } }}
                 placeholder={header}
               />
-
-              {/* <TextField
-                fullWidth
-                className={themeClass("pakal-filter", darkMode)}
-                label={header}
-                value={searchValues[index]}
-                variant="filled"
-                onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                  handleSearch(event, index)
-                }
-                InputProps={{
-                  disableUnderline: true,
-                }}
-              /> */}
             </TableCell>
           ))}
         </TableRow>
@@ -130,7 +118,9 @@ function NetHeaderTable({
                 className={themeClass("pakal-body-cell", darkMode)}
                 style={{
                   color: entry.net.hasChanged ? "red" : "white",
-                  background: entry.net.encryption ? "green" : "#eb0f0f",
+                  background: entry.net.encryption
+                    ? ENCRYPTION_TRUE_COLOR
+                    : ENCRYPTION_FALSE_COLOR,
                 }}
               >
                 {entry.net.encryption ? ENCRYPTION_TRUE : ENCRYPTION_FALSE}

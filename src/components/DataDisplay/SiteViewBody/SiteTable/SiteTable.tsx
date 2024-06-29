@@ -108,15 +108,10 @@ export function filterEntries(
       frequency: net ? net.frequency : 0,
       unitNotes: entry.notes,
     };
-    let isFiltered = true;
-    for (let i = 0; i < ENTRY_PARAMS.length; i++) {
-      if (!row[ENTRY_PARAMS[i]].toString().includes(filter[i])) {
-        isFiltered = false;
-      }
-    }
-    if (isFiltered) {
-      filteredEntries.push(entry);
-    }
+    let filtered = ENTRY_PARAMS.every((param, index) =>
+      row[param].toString().includes(filter[index])
+    );
+    if (filtered) filteredEntries.push(entry);
   });
   return filteredEntries;
 }
