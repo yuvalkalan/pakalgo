@@ -139,7 +139,10 @@ function HistoryItem({
           icon={<Bookmark />}
         />
         <MenuItem
-          disabled={!userProfile.adminPermission}
+          disabled={
+            !userProfile.adminPermission &&
+            !userProfile.rules.pakalRules.enablePullPakal
+          }
           onClick={() => handlePullPakal(index)}
         >
           משוך פק"ל

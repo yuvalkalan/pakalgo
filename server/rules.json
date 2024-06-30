@@ -1,1 +1,1 @@
-{"passwordRules": {"defaultPassword": "Aa123456", "minLength": 8, "spacialChar": false, "upperLetter": false}, "netRules": {"multiWordOk": false, "maxNetName": 20, "ableNoneVhf": false}, "pakalRules": {"enablePullPakal": false}}
+{"passwordRules": {"defaultPassword": "Aa123456", "minLength": 8, "spacialChar": false, "upperLetter": false}, "netRules": {"ableNoneVhf": false, "maxNetName": 20, "multiWordOk": false}, "pakalRules": {"enablePullPakal": false}}

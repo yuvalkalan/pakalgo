@@ -114,13 +114,12 @@ export default function HomeBody({ changeProfile }: Props) {
             required
             fullWidth
             label="שם משתמש"
-            error={!isValidUsername}
           />
           <PasswordInput
             title="סיסמה"
             password={password}
             setPassword={(newPassword) => setPassword(newPassword)}
-            checkPassword={(password: string) => password !== ""}
+            checkPassword={(_password: string) => true}
           />
           <Button
             onClick={() => {

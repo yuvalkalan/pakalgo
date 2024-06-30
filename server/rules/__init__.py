@@ -35,7 +35,7 @@ def create_dependencies():
 
 
 def get_default_password():
-    rules = get_rules()
+    rules = get_rules(True)
     return rules['passwordRules']['defaultPassword']
 
 
