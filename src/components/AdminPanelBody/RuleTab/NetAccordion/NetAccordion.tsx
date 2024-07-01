@@ -80,7 +80,7 @@ function NetAccordion({
             </TableRow>
             <TableRow>
               <StyledTableCell colSpan={2}>
-                אפשר לאוק להיות ארוך ממילה אחת
+                אפשר לאו"ק להיות ארוך ממילה אחת
               </StyledTableCell>
               <StyledTableCell>
                 <Switch

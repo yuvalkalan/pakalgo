@@ -212,7 +212,7 @@ function DialogTableRow({ netEntry, onChange }: TableRowProps) {
 }
 
 function NetDialog({ open, onClose, onSubmit, nets }: Props) {
-  const headers = ["#", "קבוצה", "שם רשת", "הצפנה", "אוק", "תדר"];
+  const headers = ["#", "קבוצה", "שם רשת", "הצפנה", 'או"ק', "תדר"];
   const darkMode = useContext(ThemeContext);
   const userProfile = useContext(UserContext);
   const [netEntries, setNetEntries] = useState<NetDialogEntry[]>([]);
@@ -262,7 +262,7 @@ function NetDialog({ open, onClose, onSubmit, nets }: Props) {
         (entry) => entry.ok.trim() && entry.ok.trim() !== entry.ok
       )
     )
-      return "שמות אוקים לא תקינים!";
+      return 'שמות או"קים לא תקינים!';
     return null;
   };
 

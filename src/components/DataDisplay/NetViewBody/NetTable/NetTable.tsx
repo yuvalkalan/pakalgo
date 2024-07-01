@@ -34,7 +34,7 @@ import {
   ENCRYPTION_TRUE,
 } from "../../SiteViewBody/SiteTable/SiteTable";
 
-const headers = ["#", "קבוצה", "שם רשת", "הצפנה", "אוק", "תדר"];
+const headers = ["#", "קבוצה", "שם רשת", "הצפנה", 'או"ק', "תדר"];
 const pagingSize = 20;
 
 interface NetEntry {
