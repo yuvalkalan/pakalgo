@@ -24,5 +24,9 @@ dist-ssr
 *.sw?
 
 
-#ignore all python compiled files
+# ignore all python compiled files
 *.pyc
+
+# ignore databases and rule files
+*.sqlite
+rule.json
