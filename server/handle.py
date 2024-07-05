@@ -218,7 +218,7 @@ def set_pakal(body: JSON_TYPE, auth, can_change_marks, can_change_sites, can_cha
         with open(database.DB_NAME, 'rb') as database_file:
             with open(os.path.join(HISTORY_FOLDER, filename), 'wb+') as new_file:
                 new_file.write(database_file.read())
-        database.add_pakal_meta(db, filename, auth['username'], len(real_sites), len(entries), len(nets), len(marks))
+        database.add_pakal_meta(db, filename, auth['username'], len(real_sites), num_of_units, len(nets), len(marks))
         _get_pakal_data.cache_clear()
 
     def update_marks():
@@ -330,6 +330,7 @@ def set_pakal(body: JSON_TYPE, auth, can_change_marks, can_change_sites, can_cha
 
     entries, marks, nets, sites = _get_pakal_data(auth, db)
     real_sites = [s[1] for s in database.get_sites(db)]
+    num_of_units = database.get_num_of_units(db)
     if not pakal_changed():
         return _response_no_change()
     save_record()

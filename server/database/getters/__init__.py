@@ -59,6 +59,12 @@ def get_sites(cursor: sqlite3.Cursor, username=None):
 
 
 @_getter_decorator
+def get_num_of_units(cursor: sqlite3.Cursor):
+    cursor.execute(GET_NUM_OF_UNITS)
+    return cursor.fetchone()[0]
+
+
+@_getter_decorator
 def get_permission_names(cursor: sqlite3.Cursor):
     cursor.execute(GET_PERMISSIONS_NAME)
     return cursor.fetchall()
