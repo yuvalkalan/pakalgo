@@ -28,6 +28,6 @@ dist-ssr
 *.pyc
 
 # ignore databases and rule files
-server/*.sqlite
 server/rules.json
 server/history
+server/database.sqlite
